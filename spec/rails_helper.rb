@@ -21,7 +21,6 @@ require 'net/http'
 require 'active_support/testing/time_helpers'
 require 'database_cleaner/active_record'
 require 'active_storage_validations/matchers'
-require 'test_prof/recipes/rspec/let_it_be'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
@@ -44,7 +43,7 @@ end
 
 Sidekiq::Testing.fake!
 
-Rack::Attack.enabled = false
+# Rack::Attack.enabled = false
 
 WebMock.disable_net_connect!(
   allow: %w[0.0.0.0],
@@ -90,7 +89,6 @@ RSpec.configure do |config|
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
   config.include(JsonHelper)
-  config.include(CSVHelpers)
   config.include(ActiveStorageBlobHelper)
 
   config.mock_with :rspec do |mocks|
@@ -146,6 +144,18 @@ RSpec.configure do |config|
 
         raise error
       end
+    end
+  end
+
+  # spec/rails_helper.rb
+  if Bullet.enable?
+    config.before(:each) do
+      Bullet.start_request
+    end
+
+    config.after(:each) do
+      Bullet.perform_out_of_channel_notifications if Bullet.notification?
+      Bullet.end_request
     end
   end
 end

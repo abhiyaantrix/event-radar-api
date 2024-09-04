@@ -3,52 +3,220 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches:
+      - develop
+      - main
+
+# Avoid concurrency on the same branch to prevent parallel runs
+# Skip this for develop and main branches, since we don't want to break releases
+concurrency:
+  group: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && format('no-concurrency-{0}', github.run_id) || format('{0}-{1}', github.workflow, github.ref) }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
+
+env:
+  RUBY_YJIT_ENABLE: 1
 
 jobs:
-  scan_ruby:
+  ## Uncomment this to test the workflows and see CI context
+  #  CI-Context:
+  #    name: CI Context check
+  #
+  #    runs-on: ubuntu-latest
+  #
+  #    steps:
+  #      - name: Dump context
+  #        env:
+  #          GITHUB_CONTEXT: ${{ toJson(github) }}
+  #          JOB_CONTEXT: ${{ toJson(job) }}
+  #          STEPS_CONTEXT: ${{ toJson(steps) }}
+  #        run: |
+  #          echo "$GITHUB_CONTEXT"
+  #          echo "$JOB_CONTEXT"
+  #          echo "$STEPS_CONTEXT"
+
+  rubocop-linters:
+    name: Rubocop Linters
+
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
+    # Run for any push event or PR but skip draft PRs
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
+      }}
 
-      - name: Set up Ruby
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Ruby and install gems ⚙️
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+      - name: Run rubocop linters 🧹
+        run: |
+          bundle exec rubocop --parallel
 
-  scan_js:
+  non-ruby-linters:
+    name: Non-Ruby Linters
+
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
+    # Run for any push event or PR but skip draft PRs
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
+      }}
 
-      - name: Set up Ruby
+    steps:
+      - name: Checkout repository 🛎️
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install NPM ⚙️
+        run: npm install -g "npm@$(jq -r .engines.npm ./package.json)"
+
+      - name: Print Node.js and NPM context 🖨️
+        run: |
+          echo "Expected Node.js version: $(jq -r .engines.node ./package.json)"
+          echo "Actual Node.js version: $(node -v)"
+          echo "Expected NPM version: $(jq -r .engines.npm ./package.json)"
+          echo "Actual NPM version: $(npm -v)"
+
+      - name: Install dependencies ⚙️
+        run: npm ci --ignore-scripts
+
+      - name: Run linter 🧹
+        run: npm run lint
+
+  rails-best-practices:
+    name: Rails best practices
+
+    runs-on: ubuntu-latest
+
+    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
+    # Run for any push event or PR but skip draft PRs
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
+      }}
+
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Ruby and install gems ⚙️
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bin/importmap audit
+      - name: Rails Best Practices
+        run: bundle exec rails_best_practices
 
-  lint:
+  unit-tests:
+    name: Unit tests
+
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Set up Ruby
+    needs:
+      - rubocop-linters
+      - non-ruby-linters
+      - rails-best-practices
+
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+      postgres:
+        image: postgres:16-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRESQL_FSYNC: off
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Install dependent libraries ⚙️
+        run: |
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt update
+          sudo apt-get install -y postgresql-client-16 libpq-dev
+
+      - name: Display openssl versions
+        run: dpkg -l | grep ssl
+
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Ruby and install gems ⚙️
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
+      - name: Setup DB 💿
+        run: |
+          bundle exec rake db:create
+          bundle exec rake db:schema:load
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost/event_radar_test'
+
+      - name: Enable db reset test
+        run: |
+          mv spec/db_reset spec/db_reset_spec.rb
+
+      - name: Run db reset test
+        run: |
+          bundle exec rspec spec/db_reset_spec.rb
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost/event_radar_test'
+
+      - name: Disable db reset test
+        run: |
+          mv spec/db_reset_spec.rb spec/db_reset_spec
+
+      - name: Run RSpec 🧪
+        run: |
+          bundle exec rspec
+        env:
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost/event_radar_test'
+          REDIS_URL: 'redis://localhost:6379'
+          RAILS_ENV: test
+          VCR_CONSISTENCY_CHECK: true

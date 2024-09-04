@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+# This file does not have _spec.rb extension because we don't want this spec to run
+# when 'rspec' command is executed. If this spec is trigger in between other specs,
+# then most of the specs after this will fail because of constant autoloading failures.
+
+# The solution is to run this spec always at last. We can certainly do this by using
+# 'rspec --order defined' but that will make all the specs run in alphabetical order
+# which we don't want because randomized order guarantees more resilience.
+# So as an alternative, we run this only in CI by changing file name and then triggering
+# the example independently.
+
+require 'rails_helper'
+
+RSpec.describe 'db_reset' do
+  let(:current_structure_file) { Rails.root.join('db', 'structure.sql') }
+  let(:tmp_structure_file) { Rails.root.join('tmp', 'structure.sql') }
+
+  before(:all) do
+    Rails.application.load_tasks
+
+    current_structure_file = Rails.root.join('db', 'structure.sql')
+    tmp_structure_file = Rails.root.join('tmp', 'structure.sql')
+
+    FileUtils.cp(current_structure_file, tmp_structure_file)
+
+    Rake::Task['db:drop'].invoke
+    Rake::Task['db:create'].invoke
+    Rake::Task['db:migrate:with_data'].invoke
+    Rake::Task['db:seed'].invoke
+    Rake::Task['db:schema:dump'].invoke
+  end
+
+  it 're-creates the schema and compares to the currently committed structure.sql file to detect differences' do
+    puts 'DIFF START'
+    puts '----------'
+    matches = system("git --no-pager diff --exit-code #{current_structure_file} #{tmp_structure_file}")
+    puts '--------'
+    puts 'DIFF END'
+
+    expect(matches).to eq(true)
+
+    puts 'No schema difference detected'
+  end
+end

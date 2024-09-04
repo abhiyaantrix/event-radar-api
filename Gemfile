@@ -89,7 +89,6 @@ group :development, :test do
 
   # ruby-prof is a profiler for MRI Ruby
   gem 'ruby-prof'
-  gem 'test-prof'
   gem 'stackprof'
 
   # Code quality tools
@@ -106,6 +105,11 @@ group :development, :test do
   gem 'rubocop-rake', '~> 0.6.0'
   gem 'rubocop-rspec', '~> 3.0.4'
   gem 'rubocop-rspec_rails', '~> 2.30.0'
+
+  # Code metric tool
+  gem 'rails_best_practices', require: false
+  # Detects N+1 queries and unused eager loading
+  gem 'bullet', '~> 7'
 end
 
 group :development do
