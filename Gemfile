@@ -55,18 +55,35 @@ group :development, :test do
   gem 'rspec', '~> 3.13'
   gem 'rspec-parameterized', '~> 1.0.2'
   gem 'rspec-rails', '~> 7.0.1'
+  # Simple one-liner tests for common Rails functionality
   gem 'shoulda-matchers', '~> 6.4.0'
+  # Library for stubbing and setting expectations on HTTP requests
+  gem 'webmock', '~> 3.23.1'
 
-  # Test data
+  # Test data and mocks
   gem 'factory_bot_rails', '~> 6.4.3'
-  gem 'factory_trace', '~> 1.1.1' # Find unused factories
+  # Find unused factories
+  gem 'factory_trace', '~> 1.1.1'
+  # Generate fake data
   gem 'faker', '~> 3.4.2'
+  gem 'timecop'
+  gem 'vcr', '~> 6.3.1'
+
+  # Strategies for cleaning databases to ensure clean state for testing suits
+  gem 'database_cleaner-active_record'
+
+  # Code coverage
+  # gem 'codecov', '~> 0.6', require: false
+  gem 'simplecov', '~> 0.22.0', require: false
+  gem 'simplecov-cobertura', require: false
+  gem 'simplecov-console', require: false
 
   # Kills postgres connections during db:reset so you don't have to restart your server. Fixes "database in use" errors.
   gem 'pgreset'
 
   # ruby-prof is a profiler for MRI Ruby
   gem 'ruby-prof'
+  gem 'test-prof'
   gem 'stackprof'
 
   # Code quality tools
