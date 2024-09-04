@@ -61,10 +61,12 @@ end
 # Track used VCR cassettes
 Thread.current[:used_cassettes] = Set.new
 module CassetteReporter
+
   def insert_cassette(name, options = {})
     Thread.current[:used_cassettes] << VCR::Cassette.new(name, options).file if VCR_CONSISTENCY_CHECK
     super
   end
+
 end
 VCR.extend(CassetteReporter)
 

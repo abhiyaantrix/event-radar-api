@@ -1,0 +1,9 @@
+coverage
+log
+tmp
+.bundle
+.byebug_history
+*.rb
+spec/fixtures/vcr_cassettes/
+db/structure.sql
+vendor

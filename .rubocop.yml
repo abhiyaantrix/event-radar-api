@@ -9,7 +9,77 @@ require:
   - rubocop-rspec_rails
   - rubocop-factory_bot
 
-# Style
+# Rails
+Rails/FilePath:
+  EnforcedStyle: arguments
+Rails/HasManyOrHasOneDependent: # Use foreign keys in DB
+  Enabled: false
+Rails/DynamicFindBy:
+  Enabled: false
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/**/*'
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging
 
+# RSpec
+RSpec/VariableName:
+  EnforcedStyle: snake_case
+RSpec/NestedGroups:
+  Enabled: false
+RSpec/MessageSpies:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Max: 15
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/AnyInstance:
+  Enabled: false
+RSpec/NamedSubject:
+  Exclude:
+    - 'spec/support/graphql_helper.rb'
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - 'spec/graphql/**/*'
+RSpec/IndexedLet:
+  Enabled: false
+
+# Metrics
+Metrics/AbcSize:
+  Max: 50
+Metrics/BlockLength:
+  Exclude:
+    - 'Gemfile'
+    - 'db/**/*'
+    - 'spec/**/*'
+    - 'config/environments/development.rb'
+    - 'config/routes.rb'
+Metrics/MethodLength:
+  Max: 50
+Metrics/ClassLength:
+  Max: 300
+Metrics/ModuleLength:
+  Max: 150
+
+# Layout
+Layout/LineLength:
+  Max: 120
+  AllowedPatterns: ['^(\s*#)'] # ignore commented out lines
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines_except_namespace
+Layout/EmptyLinesAroundModuleBody:
+  EnforcedStyle: empty_lines_except_namespace
+
+# Style
 Style/StringLiterals:
   EnforcedStyle: single_quotes

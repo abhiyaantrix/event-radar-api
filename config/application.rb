@@ -20,6 +20,7 @@ Bundler.require(*Rails.groups)
 
 module EventRadar
   class Application < Rails::Application
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
 
@@ -54,5 +55,6 @@ module EventRadar
     config.active_record.automatic_scope_inversing = true
 
     config.active_record.partial_inserts = false
+
   end
 end

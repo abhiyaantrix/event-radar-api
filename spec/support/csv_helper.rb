@@ -3,6 +3,7 @@
 require 'csv'
 
 module CSVHelpers
+
   def generate_csv(csv_data)
     csv_string = CSV.generate do |csv|
       csv << csv_data.first if csv_data.any?
@@ -14,4 +15,5 @@ module CSVHelpers
     file.rewind
     file
   end
+
 end

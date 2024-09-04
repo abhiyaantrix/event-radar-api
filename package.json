@@ -1,0 +1,43 @@
+{
+  "name": "event-radar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Event manager tool",
+  "homepage": "",
+  "license": "See LICENSE file",
+  "author": {
+    "name": "Chetan Patil"
+  },
+  "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write .",
+    "pre-commit": "lint-staged",
+    "prepare": "husky",
+    "rubocop": "bundle exec rubocop -A",
+    "rubocop:fix": "bundle exec rubocop --force-exclusion --parallel --color",
+    "test": "bundle exec rspec"
+  },
+  "lint-staged": {
+    "./**/*.{json,md,yml,yaml,sh,xml,svg,html,Dockerfile}": [
+      "prettier --write"
+    ],
+    "*.{rb,ru}": [
+      "npm run rubocop:fix"
+    ],
+    "*.md": "markdownlint --fix"
+  },
+  "devDependencies": {
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.10",
+    "markdownlint": "^0.35.0",
+    "markdownlint-cli": "^0.41.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-autocorrect": "^0.4.1",
+    "prettier-plugin-packagejson": "^2.5.2",
+    "prettier-plugin-sh": "^0.14.0"
+  },
+  "engines": {
+    "node": "22.x",
+    "npm": "10.x"
+  }
+}
