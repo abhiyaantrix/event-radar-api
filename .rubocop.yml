@@ -1,0 +1,15 @@
+# Omakase Ruby styling for Rails
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+require:
+  # - rubocop-performance # included in omakase
+  # - rubocop-rails # included in omakase
+  - rubocop-rspec
+  - rubocop-rspec_rails
+  - rubocop-factory_bot
+
+# Style
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
