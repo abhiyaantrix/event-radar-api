@@ -109,7 +109,22 @@ group :development, :test do
 end
 
 group :development do
-  gem 'binding_of_caller', '~> 1.0.1'
+  # Rails console replacement, renders error with more info: stacktrace, link to SC, REPL
+  gem 'better_errors', '2.10.1'
+  # Provides REPL for better_errors
+  gem 'binding_of_caller'
+
+  ## Dev environment helpers
+  # Listen to file modifications and notifies about the changes
+  gem 'listen'
+  # Keep application running in the background to speed up development
+  gem 'spring', '~> 4.2.1'
+  # RSpec command for Spring
+  gem 'spring-commands-rspec'
+  # Rubocop command for Spring
+  gem 'spring-commands-rubocop'
+  # # Makes spring watch files using the listen gem
+  gem 'spring-watcher-listen'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', require: 'debug/prelude'
   gem 'pry-doc', '~> 1.5'
