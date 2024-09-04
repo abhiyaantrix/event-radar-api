@@ -12,6 +12,7 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'spec_helper'
 require 'simplecov_helper'
 require 'rspec/rails'
+require 'sidekiq/testing'
 require 'factory_bot_rails'
 require 'shoulda-matchers'
 require 'webmock/rspec'
@@ -40,6 +41,8 @@ VCR.configure do |config|
     end
   end
 end
+
+Sidekiq::Testing.fake!
 
 Rack::Attack.enabled = false
 
@@ -97,6 +100,8 @@ RSpec.configure do |config|
   end
 
   config.before do
+    Sidekiq::Worker.clear_all
+
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
   end

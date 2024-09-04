@@ -17,6 +17,12 @@ gem 'redis', '>= 5.3.0'
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
+## Background processing
+# Simple, efficient background processing for Ruby
+gem 'sidekiq', '~> 7.3.1'
+# Lightweight job scheduler extension for Sidekiq
+gem 'sidekiq-scheduler', '~> 5.0.6'
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.20"
 
