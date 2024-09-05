@@ -1,0 +1,83 @@
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+#
+# ******** NOTE ********
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+#
+name: 'CodeQL'
+
+on:
+  push:
+    branches: ['develop', 'main']
+  pull_request:
+    branches: ['develop']
+    types:
+      - opened
+      - reopened
+      - synchronize
+      # First three are default, this one is added to run CI on PRs that are moved from draft to ready for review
+      # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+      - ready_for_review
+  schedule:
+    - cron: '0 6 * * *'
+
+# Avoid concurrency on the same branch to prevent parallel runs
+# Skip this for develop and main branches, since we don't want to break releases
+# to dev-stg: develop, stg: main and prod: latest tag on main branch
+concurrency:
+  group: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && format('no-concurrency-{0}', github.run_id) || format('{0}-{1}', github.workflow, github.ref) }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
+
+jobs:
+  analyze:
+    name: Analyze
+
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+
+    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
+    # Run for any push event or PR but skip draft PRs
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'pull_request' && github.event.pull_request.draft == false) ||
+        github.event_name == 'schedule'
+      }}
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'ruby']
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Use only 'java' to analyze code written in Java, Kotlin or both
+        # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          # For more details on CodeQL's query packs,
+          # refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+          queries: security-extended,security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: '/language:${{matrix.language}}'
