@@ -19,7 +19,7 @@ gem 'redis', '>= 5.3.0'
 
 ## Background processing
 # Simple, efficient background processing for Ruby
-gem 'sidekiq', '~> 7.3.1'
+gem 'sidekiq', '~> 7.3.2'
 # Lightweight job scheduler extension for Sidekiq
 gem 'sidekiq-scheduler', '~> 5.0.6'
 

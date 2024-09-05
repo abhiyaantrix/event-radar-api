@@ -386,7 +386,7 @@ GEM
     sexp_processor (4.17.2)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
-    sidekiq (7.3.1)
+    sidekiq (7.3.2)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       logger
@@ -515,7 +515,7 @@ DEPENDENCIES
   rubocop-rspec_rails (~> 2.30.0)
   ruby-prof
   shoulda-matchers (~> 6.4.0)
-  sidekiq (~> 7.3.1)
+  sidekiq (~> 7.3.2)
   sidekiq-scheduler (~> 5.0.6)
   simplecov (~> 0.22.0)
   simplecov-cobertura
