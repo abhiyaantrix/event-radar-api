@@ -1,11 +1,21 @@
-name: CI
+name: Continuous Integration
 
 on:
-  pull_request:
   push:
     branches:
       - develop
       - main
+
+  pull_request:
+    branches:
+      - '*'
+    types:
+      - opened
+      - reopened
+      - synchronize
+      # First three are default, this one is added to run CI on PRs that are moved from draft to ready for review
+      # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+      - ready_for_review
 
 # Avoid concurrency on the same branch to prevent parallel runs
 # Skip this for develop and main branches, since we don't want to break releases
