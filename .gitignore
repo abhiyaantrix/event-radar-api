@@ -23,8 +23,6 @@
 !/tmp/pids/
 !/tmp/pids/.keep
 
-# Ignore node_modules
-node_modules/
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
@@ -39,3 +37,13 @@ node_modules/
 .rspec
 /coverage/
 /spec/tmp
+spec/examples.txt
+
+vendor/cache
+
+## Nodejs
+node_modules/
+npm-debug.log*
+.npm
+.npmrc
+.node_repl_history
