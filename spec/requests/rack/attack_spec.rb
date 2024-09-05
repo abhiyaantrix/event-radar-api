@@ -15,7 +15,7 @@ RSpec.describe Rack::Attack do
     described_class.cache.store = cache_store_was
   end
 
-  it 'throttles the request' do
+  it 'throttles request' do
     headers = { 'ACCEPT' => 'application/json' }
     stub_const('Rack::Attack::LIMIT_PER_IP', 2)
 
