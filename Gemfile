@@ -44,6 +44,10 @@ gem 'bootsnap', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.13.0"
 
+# Rack middleware for blocking & throttling
+# Configure at config/initializers/rack_attack.rb
+gem 'rack-attack', '~> 6.7'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem 'rack-cors', '~> 2.0.2'
 

@@ -43,7 +43,7 @@ end
 
 Sidekiq::Testing.fake!
 
-# Rack::Attack.enabled = false
+Rack::Attack.enabled = false
 
 WebMock.disable_net_connect!(
   allow: %w[0.0.0.0],

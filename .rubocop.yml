@@ -9,6 +9,19 @@ require:
   - rubocop-rspec_rails
   - rubocop-factory_bot
 
+AllCops:
+  TargetRubyVersion: 3.3.5
+  NewCops: enable
+  Exclude:
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - '.git/**/*'
+    - '.bundle/**/*'
+    - 'config/environments/**/*'
+    - 'db/structure.sql'
+
 # Rails
 Rails/FilePath:
   EnforcedStyle: arguments
@@ -79,6 +92,10 @@ Layout/EmptyLinesAroundClassBody:
   EnforcedStyle: empty_lines_except_namespace
 Layout/EmptyLinesAroundModuleBody:
   EnforcedStyle: empty_lines_except_namespace
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_block
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: keyword
 
 # Style
 Style/StringLiterals:
