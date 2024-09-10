@@ -28,4 +28,13 @@
 #       enabled: "ON"
 
 en:
-  hello: 'Hello world'
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            preferences:
+              format:
+                invalid: 'must be a valid JSON object'
+              theme:
+                invalid: 'is not a valid theme. Available options: %{themes}'
