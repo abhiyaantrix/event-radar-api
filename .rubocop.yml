@@ -70,6 +70,7 @@ Metrics/BlockLength:
   Exclude:
     - 'Gemfile'
     - 'db/**/*'
+    - 'lib/tasks/**/*'
     - 'spec/**/*'
     - 'config/environments/development.rb'
     - 'config/routes.rb'
