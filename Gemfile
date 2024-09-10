@@ -34,7 +34,7 @@ gem 'annotate', '~> 3.2'
 
 # JSON Serialization
 gem 'alba', '~> 3.2'
-gem 'oj', '~> 3.16.5'
+gem 'oj', '~> 3.16.6'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
