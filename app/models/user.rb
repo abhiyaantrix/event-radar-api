@@ -22,6 +22,10 @@
 #
 class User < ApplicationRecord
 
+  # TODO: Move this to Global Application Config class
+  THEMES = %w[system dark light].freeze
+
+  after_initialize :set_default_preferences, if: :new_record?
   before_save :sanitize_names
 
   validates :first_name, presence: true
@@ -30,11 +34,19 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, 'valid_email_2/email': true
   normalizes :email, with: ->(email) { email.downcase }
 
+  serialize :preferences, coder: HashSerializer
+  store_accessor :preferences, :theme, prefix: :preference
+  validates :preferences, preferences: true
+
   validates :archival_reason, presence: true, if: :archived?
 
   enum :status, { pending: 0, active: 1, archived: 2 }
 
   private
+
+  def set_default_preferences
+    self.preference_theme ||= 'system' if self.preferences.blank?
+  end
 
   def sanitize_names
     self.first_name = first_name.strip if first_name_changed?

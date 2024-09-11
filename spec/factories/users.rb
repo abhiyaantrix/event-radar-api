@@ -26,10 +26,7 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.unique.email }
     status { :active }
-
-    preferences do
-      # { theme: Faker::Color.color_name, language: Faker::Nation.language }
-    end
+    preferences { { theme: 'system' } }
 
     trait :pending do
       status { :pending }

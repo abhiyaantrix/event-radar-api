@@ -46,6 +46,10 @@ RSpec.describe User, type: :model do
     describe '#full_name' do
       subject(:user) { create(:user) }
 
+      it 'sets full name' do
+        expect(user.full_name).to eq("#{user.first_name} #{user.last_name}")
+      end
+
       it 'updates when first_name changes' do
         user.update(first_name: 'john')
 
@@ -80,6 +84,51 @@ RSpec.describe User, type: :model do
         subject(:user) { build(:user, :archived, archival_reason: nil) }
 
         it { is_expected.to be_invalid }
+      end
+    end
+
+    describe '#preferences' do
+      it 'sets default preferences when user is created' do
+        expect(user.preference_theme).to eq 'system'
+      end
+
+      it 'allows setting preferences' do
+        user.preference_theme = 'dark'
+
+        expect(user.preference_theme).to eq 'dark'
+      end
+
+      context 'invalid theme preference' do
+        before do
+          user.preference_theme = 'invalid_theme'
+          user.valid?
+        end
+
+        it 'adds error for invalid theme' do
+          is_expected.to be_invalid
+
+          expect(user.errors[:preferences]).to include(
+            I18n.t(
+              'activerecord.errors.models.user.attributes.preferences.theme.invalid',
+              themes: User::THEMES.join(', ')
+            )
+          )
+        end
+      end
+
+      context 'invalid preferences structure' do
+        before do
+          user.preferences = 'invalid_json'
+          user.valid?
+        end
+
+        it 'adds error for invalid format' do
+          is_expected.to be_invalid
+
+          expect(user.errors[:preferences]).to include(
+            I18n.t('activerecord.errors.models.user.attributes.preferences.format.invalid')
+          )
+        end
       end
     end
   end
