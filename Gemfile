@@ -29,6 +29,9 @@ gem 'sidekiq-scheduler', '~> 5.0.6'
 # Validate ActiveStorage attachments
 gem 'active_storage_validations', '~> 1.1.4'
 
+# Email validation
+gem 'valid_email2', '~> 5.3'
+
 # Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema
 gem 'annotate', '~> 3.2'
 

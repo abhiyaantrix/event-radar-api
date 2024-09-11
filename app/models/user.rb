@@ -24,16 +24,15 @@ class User < ApplicationRecord
 
   before_save :sanitize_names
 
-  validates :email, presence: true, uniqueness: true
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  validates :archival_reason, presence: true, if: :archived?
-
+  validates :email, presence: true, uniqueness: true, 'valid_email_2/email': true
   normalizes :email, with: ->(email) { email.downcase }
 
-  enum :status, { pending: 0, active: 1, archived: 2 }
+  validates :archival_reason, presence: true, if: :archived?
 
+  enum :status, { pending: 0, active: 1, archived: 2 }
 
   private
 
