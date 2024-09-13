@@ -40,3 +40,21 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+docker-compose.yml
+
+# Testing
+coverage/
+
+# Readme
+README.md
+docs
+
+# IDE and editors
+.vscode
+.idea
+
+# Dot files and folders
+.DS_Store
+.ruby-lsp
+.husky
+.github
