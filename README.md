@@ -103,6 +103,18 @@ npm run lint:fix
 rubocop -A
 ```
 
+### Commit messages
+
+We use [commitlint](https://commitlint.js.org) to enforce commit message best practices.
+
+```bash
+# Check commit message format
+npm run lint:commit
+
+# Check commit message format from specific commit
+npm run lint:commit:head
+```
+
 ## API Documentation
 
 TODO: Add Swagger/OpenAPI documentation

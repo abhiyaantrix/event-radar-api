@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+npm run lint:commit
+
+#exit 1 # Uncomment to test pre-commit hooks, will abort git commit

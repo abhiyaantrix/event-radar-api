@@ -10,6 +10,8 @@
   },
   "scripts": {
     "lint": "prettier --check .",
+    "lint:commit": "commitlint --edit",
+    "lint:commit:head": "commitlint --from=HEAD~1",
     "lint:fix": "prettier --write .",
     "pre-commit": "lint-staged",
     "prepare": "husky",
@@ -27,6 +29,9 @@
     "*.md": "markdownlint --fix"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/format": "^19.5.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "markdownlint": "^0.35.0",
