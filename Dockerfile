@@ -1,63 +1,50 @@
-# syntax = docker/dockerfile:1
+FROM ruby:3.3.5-alpine
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t my-app .
-# docker run -d -p 80:80 -p 443:443 --name my-app -e RAILS_MASTER_KEY=<value from config/master.key> my-app
+RUN apk --update-cache add --update --virtual build-dependencies alpine-sdk postgresql-dev ruby-dev
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-ARG RUBY_VERSION=3.3.4
-FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+# Keep build-base and Git to be able install updated gems later
+RUN apk --update-cache add --update build-base git tzdata postgresql-client \
+  libffi-dev libxml2-dev libxslt-dev gcompat
 
-# Rails app lives here
-WORKDIR /rails
+ENV APP_HOME /app
 
-# Install base packages
-RUN apt-get update -qq \
-  && apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client \
-  && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
 
-# Set production environment
-ENV RAILS_ENV="production" \
-  BUNDLE_DEPLOYMENT="1" \
-  BUNDLE_PATH="/usr/local/bundle" \
-  BUNDLE_WITHOUT="development"
+ADD Gemfile* $APP_HOME/
 
-# Throw-away build stage to reduce size of final image
-FROM base AS build
+# Cache gems
+ENV BUNDLE_PATH=/bundle \
+  BUNDLE_BIN=/bundle/bin \
+  GEM_HOME=/bundle
+ENV PATH="${BUNDLE_BIN}:${PATH}"
 
-# Install packages needed to build gems
-RUN apt-get update -qq \
-  && apt-get install --no-install-recommends -y build-essential git libpq-dev pkg-config \
-  && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+# Install gems
+RUN gem update --system
+RUN gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --no-document \
+  && bundle config set no-cache 'true' \
+  && bundle config set clean 'true'
 
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install \
-  && rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git \
-  && bundle exec bootsnap precompile --gemfile
+RUN bundle config build.nokogiri --use-system-libraries
+RUN bundle check \
+  || bundle install --jobs $(expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1) --retry 3
 
-# Copy application code
-COPY . .
+# Cleanup
+RUN apk del build-dependencies
+RUN rm -rf /var/cache/apk/*
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
-
-# Final stage for app image
-FROM base
-
-# Copy built artifacts: gems, application
-COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
+COPY . $APP_HOME
 
 # Run and own only the runtime files as a non-root user for security
-RUN groupadd --system --gid 1000 rails \
-  && useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash \
+RUN addgroup -S -g 1000 rails \
+  && adduser -S -u 1000 -G rails -h /home/rails -s /bin/bash rails \
   && chown -R rails:rails db log storage tmp
+
 USER 1000:1000
 
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# Used in boot.rb to disable bootsnap in docker
+ENV WITHIN_DOCKER=true
 
-# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+
+CMD ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]

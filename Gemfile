@@ -120,6 +120,8 @@ group :development, :test do
 end
 
 group :development do
+  # Process manager for applications with multiple components
+  gem 'foreman'
   # Rails console replacement, renders error with more info: stacktrace, link to SC, REPL
   gem 'better_errors', '2.10.1'
   # Provides REPL for better_errors
