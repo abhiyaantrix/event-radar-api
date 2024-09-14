@@ -14,6 +14,8 @@ Rails.application.configure do
 
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.active_job.queue_adapter = :test
+
   # While tests run files are not watched, reloading is not necessary.
   config.enable_reloading = false
 
@@ -24,6 +26,7 @@ Rails.application.configure do
   config.eager_load = ENV['CI'].present?
 
   # Configure public file server for tests with Cache-Control for performance.
+  config.public_file_server.enabled = true
   config.public_file_server.headers = { 'Cache-Control' => "public, max-age=#{1.hour.to_i}" }
 
   # Show full error reports and disable caching.

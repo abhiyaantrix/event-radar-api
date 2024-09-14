@@ -104,6 +104,8 @@ RSpec.configure do |config|
 
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
+
+    ActiveJob::Base.queue_adapter.enqueued_jobs.clear
   end
 
   config.before(:each, type: :system) do
