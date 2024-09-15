@@ -2,7 +2,7 @@
 
 An all in one event management system made easy for the modern era to manage events, attendees, and more.
 
-This is the API only backend application, user facing frontend is available at [Event Radar Web](https://github.com/event-radar/event-radar-web)
+This is the API only backend application, user facing frontend is available at [Event Radar Web](https://github.com/abhiyaantrix/event-radar-web)
 
 Both can be independently deployed and scaled separately.
 
