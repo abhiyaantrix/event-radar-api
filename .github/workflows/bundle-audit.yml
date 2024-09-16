@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '0 18 * * 5' # Runs weekly on Friday at 6 PM UTC
 
+  # https://crontab.guru/
   # * * * * *
   # | | | | |
   # | | | | +---- Day of the week (0 - 7) (Sunday is both 0 and 7)
