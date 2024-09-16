@@ -153,6 +153,12 @@ bundle exec bundle-audit check
 bundle exec brakeman -A
 ```
 
+Execute all at once
+
+```bash
+npm run lint:ruby
+```
+
 ### Continuous integration
 
 GitHub Actions is used for CI/CD and static code analysis for code style, security vulnerabilities, and best practices.

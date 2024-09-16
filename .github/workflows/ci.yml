@@ -210,7 +210,7 @@ jobs:
           bundler-cache: true
 
       - name: Run brakeman 🧹
-        run: bundle exec brakeman -A
+        run: bundle exec brakeman -A --no-pager
 
   detect-unused-routes:
     name: Detect unused routes

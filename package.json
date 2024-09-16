@@ -14,6 +14,7 @@
     "lint:commit": "commitlint --edit",
     "lint:commit:head": "commitlint --from=HEAD~1",
     "lint:fix": "prettier --write .",
+    "lint:ruby": "bundle exec rubocop -A --parallel --color && bundle exec bundle-audit check --update && bundle exec rails_best_practices && bundle exec reek && bundle exec rake traceroute && bundle exec brakeman --no-pager",
     "pre-commit": "lint-staged",
     "prepare": "husky",
     "rubocop:fix": "bundle exec rubocop --force-exclusion --parallel --color",
@@ -28,7 +29,7 @@
       "bundle exec rails_best_practices",
       "bundle exec reek",
       "bundle exec rake traceroute",
-      "bundle exec brakeman"
+      "bundle exec brakeman --no-pager"
     ],
     "Gemfile, Gemfile.lock": [
       "npm run rubocop:fix",
