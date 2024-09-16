@@ -149,7 +149,6 @@ RSpec.configure do |config|
     end
   end
 
-  # spec/rails_helper.rb
   if Bullet.enable?
     config.before(:each) do
       Bullet.start_request

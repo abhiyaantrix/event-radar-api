@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PreferencesValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
@@ -14,17 +16,16 @@ class PreferencesValidator < ActiveModel::EachValidator
   def valid_value?(value)
     return true if value.is_a?(Hash)
 
-    return false if value.blank? || !value.is_a?(String)
-
-    JSON.parse(value)
+    JSON.parse(value) if value.is_a?(String)
   rescue JSON::ParserError
     false
   end
 
   def validate_theme(preferences, record)
     valid_themes = User::THEMES
+    theme = preferences['theme']
 
-    if preferences['theme'].present? && !valid_themes.include?(preferences['theme'])
+    if theme.present? && !valid_themes.include?(theme)
       record.errors.add(
         :preferences,
         I18n.t('activerecord.errors.models.user.attributes.preferences.theme.invalid', themes: valid_themes.join(', '))
