@@ -6,6 +6,8 @@ RUN apk --update-cache add --update --virtual build-dependencies alpine-sdk post
 RUN apk --update-cache add --update build-base git tzdata postgresql-client \
   libffi-dev libxml2-dev libxslt-dev gcompat
 
+ENV RUBYOPT="--yjit"
+
 ENV APP_HOME /app
 
 RUN mkdir $APP_HOME
