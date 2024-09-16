@@ -1,0 +1,21 @@
+exclude_paths:
+  - vendor/
+  - public/
+  - log/
+  - tmp/
+  - node_modules/
+  - .github/
+  - .vscode/
+  - .idea/
+  - .husky/
+  - doc/
+  - db/
+
+detectors:
+  IrresponsibleModule:
+    enabled: false
+
+directories:
+  'app/validators':
+    UtilityFunction:
+      enabled: false

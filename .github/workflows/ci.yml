@@ -44,18 +44,35 @@ jobs:
   #          echo "$JOB_CONTEXT"
   #          echo "$STEPS_CONTEXT"
 
+  ci-eligibility-check:
+    name: CI Eligibility Check
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      eligible: ${{ steps.check.outputs.eligible }}
+
+    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
+    # Run for any push event or PR but skip draft PRs
+    steps:
+      - name: Should run CI?
+        id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "push" || \
+                ( "${{ github.event_name }}" == "pull_request" && \
+                  "${{ github.event.pull_request.draft }}" == "false" ) ]]; then
+            echo "eligible=true" >> $GITHUB_OUTPUT
+          else
+            echo "eligible=false" >> $GITHUB_OUTPUT
+          fi
+
   rubocop-linters:
     name: Rubocop Linters
 
     runs-on: ubuntu-latest
 
-    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
-    # Run for any push event or PR but skip draft PRs
-    if: >-
-      ${{
-        github.event_name == 'push' ||
-        (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
-      }}
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
 
     steps:
       - name: Checkout repository 🛎
@@ -78,13 +95,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
-    # Run for any push event or PR but skip draft PRs
-    if: >-
-      ${{
-        github.event_name == 'push' ||
-        (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
-      }}
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
 
     steps:
       - name: Checkout repository 🛎️
@@ -119,13 +131,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # Important conditions, since all following jobs depend on this job and do not check for these conditions again
-    # Run for any push event or PR but skip draft PRs
-    if: >-
-      ${{
-        github.event_name == 'push' ||
-        (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
-      }}
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
 
     steps:
       - name: Checkout repository 🛎
@@ -142,6 +149,92 @@ jobs:
       - name: Rails Best Practices
         run: bundle exec rails_best_practices
 
+  bundler-audit:
+    name: Bundler audit
+
+    runs-on: ubuntu-latest
+
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
+
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Run bundler-audit 🧹
+        uses: ./.github/actions/bundle-audit
+
+  code-smell-detector:
+    name: Code smell detector
+
+    runs-on: ubuntu-latest
+
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
+
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Ruby and install gems ⚙️
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run code smell detector 🧹
+        run: bundle exec reek .
+
+  brakeman:
+    name: Brakeman
+
+    runs-on: ubuntu-latest
+
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
+
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Ruby and install gems ⚙️
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run brakeman 🧹
+        run: bundle exec brakeman -A
+
+  detect-unused-routes:
+    name: Detect unused routes
+
+    runs-on: ubuntu-latest
+
+    needs: ci-eligibility-check
+    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
+
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Ruby and install gems ⚙️
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run unused routes detector 🧹
+        run: bundle exec rake traceroute
+
   unit-tests:
     name: Unit tests
 
@@ -151,6 +244,10 @@ jobs:
       - rubocop-linters
       - non-ruby-linters
       - rails-best-practices
+      - bundler-audit
+      - code-smell-detector
+      - detect-unused-routes
+      - brakeman
 
     services:
       redis:

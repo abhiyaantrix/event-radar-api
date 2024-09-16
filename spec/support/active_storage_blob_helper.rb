@@ -2,18 +2,20 @@
 
 module ActiveStorageBlobHelper
 
-  def create_blob(tempfile, content_type = nil)
+  def self.create_blob(tempfile, content_type = nil)
     tempfile.rewind
+    path = tempfile.path
+    filename = File.basename(path)
     uploaded_file = ActionDispatch::Http::UploadedFile.new(
-      filename: File.basename(tempfile.path), tempfile:
+      filename: filename, tempfile:
     )
 
     ActiveStorage::Blob.create_and_upload!(
-      io: uploaded_file, filename: File.basename(tempfile.path), content_type:
+      io: uploaded_file, filename: filename, content_type:
     )
   end
 
-  def blob_url(blob)
+  def self.blob_url(blob)
     Rails.application.routes.url_helpers.rails_blob_url(blob)
   end
 

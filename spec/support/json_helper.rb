@@ -3,11 +3,17 @@
 module JsonHelper
 
   def json
-    @json ||= JSON.parse(response.body) if response.body.present?
+    @json ||= begin
+      body = response.body
+      JSON.parse(body) if body.present?
+    end
   end
 
   def json_symbolize
-    @json_symbolize ||= JSON.parse(response.body, symbolize_names: true) if response.body.present?
+    @json_symbolize ||= begin
+      body = response.body
+      JSON.parse(body, symbolize_names: true) if body.present?
+    end
   end
 
 end

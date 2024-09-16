@@ -1,0 +1,28 @@
+name: 'Weekly Bundle Audit'
+
+on:
+  schedule:
+    - cron: '0 18 * * 5' # Runs weekly on Friday at 6 PM UTC
+
+  # * * * * *
+  # | | | | |
+  # | | | | +---- Day of the week (0 - 7) (Sunday is both 0 and 7)
+  # | | | +------ Month (1 - 12)
+  # | | +-------- Day of the month (1 - 31)
+  # | +---------- Hour (0 - 23)
+  # +------------ Minute (0 - 59)
+
+jobs:
+  bundler-audit:
+    name: Bundler audit
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository 🛎
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Run bundler-audit 🧹
+        uses: ./.github/actions/bundle-audit

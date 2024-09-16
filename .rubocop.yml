@@ -13,6 +13,10 @@ AllCops:
   TargetRubyVersion: 3.3.5
   NewCops: enable
   Exclude:
+    # Include 'scripts' directory, exclude everything else in 'bin'
+    <% Dir.glob('bin/**/*').grep_v(%r{bin/scripts/}).each do |path| %>
+    - <%= path %>
+    <% end %>
     - 'log/**/*'
     - 'public/**/*'
     - 'vendor/**/*'
@@ -101,3 +105,6 @@ Layout/EndAlignment:
 # Style
 Style/StringLiterals:
   EnforcedStyle: single_quotes
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always

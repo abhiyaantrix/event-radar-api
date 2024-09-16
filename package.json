@@ -9,13 +9,13 @@
     "name": "Chetan Patil"
   },
   "scripts": {
+    "check-ruby-shebang": "sh -c 'if head -n 1 $0 | grep -qE \"^#!/.*\\bruby\"; then npm run rubocop:fix; fi'",
     "lint": "prettier --check .",
     "lint:commit": "commitlint --edit",
     "lint:commit:head": "commitlint --from=HEAD~1",
     "lint:fix": "prettier --write .",
     "pre-commit": "lint-staged",
     "prepare": "husky",
-    "rubocop": "bundle exec rubocop -A",
     "rubocop:fix": "bundle exec rubocop --force-exclusion --parallel --color",
     "test": "bundle exec rspec"
   },
@@ -24,7 +24,18 @@
       "prettier --write"
     ],
     "*.{rb,ru}": [
-      "npm run rubocop:fix"
+      "npm run rubocop:fix",
+      "bundle exec rails_best_practices",
+      "bundle exec reek",
+      "bundle exec rake traceroute",
+      "bundle exec brakeman"
+    ],
+    "Gemfile, Gemfile.lock": [
+      "npm run rubocop:fix",
+      "bundle exec bundle-audit check --update"
+    ],
+    "*": [
+      "npm run check-ruby-shebang"
     ],
     "*.md": "markdownlint --fix"
   },

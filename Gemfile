@@ -33,7 +33,7 @@ gem 'active_storage_validations', '~> 1.1.4'
 gem 'valid_email2', '~> 5.3'
 
 # Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema
-gem 'annotate', '~> 3.2'
+gem 'annotate'
 
 # JSON Serialization
 gem 'alba', '~> 3.2'
@@ -65,29 +65,28 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
   # Tests
-  gem 'rspec', '~> 3.13'
-  gem 'rspec-parameterized', '~> 1.0.2'
-  gem 'rspec-rails', '~> 7.0.1'
+  gem 'rspec'
+  gem 'rspec-parameterized'
+  gem 'rspec-rails'
   # Simple one-liner tests for common Rails functionality
-  gem 'shoulda-matchers', '~> 6.4.0'
+  gem 'shoulda-matchers'
   # Library for stubbing and setting expectations on HTTP requests
-  gem 'webmock', '~> 3.23.1'
+  gem 'webmock'
 
   # Test data and mocks
-  gem 'factory_bot_rails', '~> 6.4.3'
-  # Find unused factories
-  gem 'factory_trace', '~> 1.1.1'
+  gem 'factory_bot_rails'
+  gem 'factory_trace'
   # Generate fake data
-  gem 'faker', '~> 3.4.2'
+  gem 'faker'
   gem 'timecop'
-  gem 'vcr', '~> 6.3.1'
+  gem 'vcr'
 
   # Strategies for cleaning databases to ensure clean state for testing suits
   gem 'database_cleaner-active_record'
 
   # Code coverage
   # gem 'codecov', '~> 0.6', require: false
-  gem 'simplecov', '~> 0.22.0', require: false
+  gem 'simplecov', require: false
   gem 'simplecov-cobertura', require: false
   gem 'simplecov-console', require: false
 
@@ -105,25 +104,31 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem 'rubocop-rails-omakase', require: false
-  gem 'rubocop', '~> 1.66.1'
-  gem 'rubocop-factory_bot', '~> 2.26.1'
-  gem 'rubocop-performance', '~> 1.21.1'
-  gem 'rubocop-rails', '~> 2.26.1'
-  gem 'rubocop-rake', '~> 0.6.0'
-  gem 'rubocop-rspec', '~> 3.0.5'
-  gem 'rubocop-rspec_rails', '~> 2.30.0'
+  gem 'rubocop'
+  gem 'rubocop-factory_bot'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rake'
+  gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails'
 
   # Code metric tool
   gem 'rails_best_practices', require: false
   # Detects N+1 queries and unused eager loading
-  gem 'bullet', '~> 7'
+  gem 'bullet'
+  # Code smell detector for Ruby
+  gem 'reek'
+  # Patch-level verification for Bundler
+  gem 'bundler-audit', require: false
+  # Rake task gem that finds unused routes and controller actions
+  gem 'traceroute'
 end
 
 group :development do
   # Process manager for applications with multiple components
   gem 'foreman'
   # Rails console replacement, renders error with more info: stacktrace, link to SC, REPL
-  gem 'better_errors', '2.10.1'
+  gem 'better_errors'
   # Provides REPL for better_errors
   gem 'binding_of_caller'
 
@@ -131,7 +136,7 @@ group :development do
   # Listen to file modifications and notifies about the changes
   gem 'listen'
   # Keep application running in the background to speed up development
-  gem 'spring', '~> 4.2.1'
+  gem 'spring'
   # RSpec command for Spring
   gem 'spring-commands-rspec'
   # Rubocop command for Spring
@@ -139,16 +144,16 @@ group :development do
   # # Makes spring watch files using the listen gem
   gem 'spring-watcher-listen'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem 'debug', require: 'debug/prelude'
-  gem 'pry-doc', '~> 1.5'
-  gem 'pry-nav', '~> 1.0'
-  gem 'pry-rails', '~> 0.3.11'
-  gem 'pry-rescue', '~> 1.6'
-  gem 'pry-stack_explorer', '~> 0.6.1'
+  gem 'debug', require: false
+  gem 'pry-doc', require: false
+  gem 'pry-nav', require: false
+  gem 'pry-rails', require: false
+  gem 'pry-rescue', require: false
+  gem 'pry-stack_explorer', require: false
   # gem 'pry-theme', '~> 1.3.1'
   # gem 'pry-inline'
   # gem 'pry-coolline', '~> 0.2.6'
   # gem 'pry-clipboard', '~> 0.1.1'
   # gem 'pry-awesome_print', '~> 9.6.11'
-  gem 'solargraph', '~> 0.50.0'
+  gem 'solargraph'
 end
