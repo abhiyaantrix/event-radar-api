@@ -12,6 +12,7 @@ Started this project with two purposes
 
 1. Brush up on my Ruby on Rails skills
 2. Portfolio project
+3. Experiment with new technologies
 
 ### Note
 
@@ -111,53 +112,26 @@ bundle exec sidekiq
 
 Rails server will be available on <http://localhost:3000> and Sidekiq on <http://localhost:3000/sidekiq>
 
-### Testing
+#### Debugging
 
-```bash
-rspec
-```
-
-Rails console for debugging
+Use Rails console for debugging
 
 ```bash
 rails c
 ```
 
-### Code quality and best practices
+Use [Ruby's Debugger](https://github.com/ruby/debug) with
+[pry](https://github.com/pry/pry) for debugging
 
 ```bash
-# Single point to auto fix all linting issues
-# It will also run rubocop
-npm run lint:fix
-
-# Execute rubocop manually
-# Linting and static code analysis
-rubocop -A
+binding.pry
 ```
 
-There are additional static analyzers for code smells and security vulnerabilities.
+### Background jobs processing
 
-1. [Rubocop](https://rubocop.org/) is configured as Ruby linter
-2. [Bullet](https://github.com/flyerhzm/bullet) is configured to detect N+1 queries and unused eager loading
-3. [Reek](https://github.com/troessner/reek) is configured to detect code smells
-4. [Traceroute](https://github.com/amatsuda/traceroute) is configured to detect unused routes and actions
-5. [Bundler audit](https://github.com/rubysec/bundler-audit) is configured to detect vulnerabilities in Ruby gems
-6. [Rails best practices](https://github.com/flyerhzm/rails_best_practices) is configured to detect best practices violations
-7. [Brakeman](https://brakemanscanner.org/) is configured to detect security vulnerabilities
+For long running asynchronous jobs, we use [Sidekiq](https://github.com/sidekiq/sidekiq)
 
-```bash
-bundle exec rails_best_practices
-bundle exec reek
-bundle exec rake tracerout
-bundle exec bundle-audit check
-bundle exec brakeman -A
-```
-
-Execute all at once
-
-```bash
-npm run lint:ruby
-```
+Check [Background jobs](./docs/developer/background_jobs.md) for more details.
 
 ### Continuous integration
 
@@ -168,17 +142,9 @@ Check [GitHub Actions](.github/workflows) for more details.
 It is triggered on every pull request and push to main or develop branch.
 We also skip it for draft pull requests and also concurrency jobs are cancelled.
 
-### Commit messages
+### Code quality
 
-We use [commitlint](https://commitlint.js.org) to enforce commit message best practices.
-
-```bash
-# Check commit message format
-npm run lint:commit
-
-# Check commit message format from specific commit
-npm run lint:commit:head
-```
+Check [Code Quality](./docs/developer/code_quality.md) for more details.
 
 ## API Documentation
 

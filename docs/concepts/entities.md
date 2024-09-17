@@ -13,8 +13,6 @@ User can choose to keep their details private or public while attending the even
 and they may be free or require payment to attend. Each event has important details such as the time, location,
 description, and price (if applicable).
 
-### Key Features
-
 - Users can create events
 - Events can have multiple organizers
 - Events can have limited or unlimited seats
@@ -29,8 +27,6 @@ description, and price (if applicable).
 a space for users to discuss, share ideas, and organize events related to the group's focus. Users can join multiple
 groups to stay connected with topics or activities they care about.
 
-### Key Features
-
 - Groups are created by users and centered around shared interests
 - Members can join groups to receive notifications about upcoming events and discussions
 - Group administrators can create and manage events related to the group, approve group members
@@ -42,8 +38,6 @@ groups to stay connected with topics or activities they care about.
 they receive confirmation and relevant event details. For paid events, users must complete payment
 during the registration process.
 
-### Key Features:
-
 - Users can register for both free and paid events
 - There could be waiting list for events with limited seats
 - Event organizers can manage the list of attendees, accept or reject application to attend
@@ -54,8 +48,6 @@ during the registration process.
 **Organizer** is a user who creates and manages events. Multiple organizers can be associated with a single event,
 allowing collaborative event management. Organizers have administrative control over their events, including setting
 event details, managing attendees, and making changes as needed.
-
-### Key Features:
 
 - Organizers create and manage events
 - Events can have multiple organizers to share management responsibilities
