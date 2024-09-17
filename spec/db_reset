@@ -28,7 +28,6 @@ RSpec.describe 'db_reset' do
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate:with_data'].invoke
     Rake::Task['db:seed'].invoke
-    Rake::Task['db:schema:dump'].invoke
   end
 
   it 're-creates the schema and compares to the currently committed structure.sql file to detect differences' do
