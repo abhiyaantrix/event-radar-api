@@ -70,15 +70,17 @@ group :development, :test do
   gem 'rspec-rails'
   # Simple one-liner tests for common Rails functionality
   gem 'shoulda-matchers'
-  # Library for stubbing and setting expectations on HTTP requests
-  gem 'webmock'
-
   # Test data and mocks
   gem 'factory_bot_rails'
+  # Show factory bot calls in test output
   gem 'factory_trace'
   # Generate fake data
   gem 'faker'
+  # Time manipulation for testing
   gem 'timecop'
+  # Library for stubbing and setting expectations on HTTP requests
+  gem 'webmock'
+  # Record and replay HTTP requests
   gem 'vcr'
 
   # Strategies for cleaning databases to ensure clean state for testing suits
