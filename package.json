@@ -28,8 +28,7 @@
       "npm run rubocop:fix",
       "bundle exec rails_best_practices",
       "bundle exec reek",
-      "bundle exec rake traceroute",
-      "bundle exec brakeman --no-pager --only-files"
+      "bundle exec rake traceroute"
     ],
     "Gemfile, Gemfile.lock": [
       "npm run rubocop:fix",

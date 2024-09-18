@@ -28,6 +28,10 @@
 #       enabled: "ON"
 
 en:
+  errors:
+    request:
+      format:
+        only_json_accepted: 'Only JSON is accepted'
   activerecord:
     errors:
       models:
