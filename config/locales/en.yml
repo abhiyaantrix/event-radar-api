@@ -28,10 +28,18 @@
 #       enabled: "ON"
 
 en:
-  errors:
-    request:
-      format:
-        only_json_accepted: 'Only JSON is accepted'
+  api:
+    v1:
+      errors:
+        request:
+          format:
+            only_json_accepted: 'Only JSON requests are accepted'
+        response:
+          ok: Success
+          internal_server_error: 'Internal server error'
+          unprocessable_content: 'Unprocessable content'
+          bad_request: 'Bad request'
+          record_not_found: 'Resource not found'
   activerecord:
     errors:
       models:

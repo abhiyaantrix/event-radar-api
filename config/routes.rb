@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   # TODO: Add admin constraints
   mount Sidekiq::Web => '/sidekiq'
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  namespace :api do
+    namespace :v1 do
+      # This must be the last route definition under the namespace
+      # to catch-all route to handle missing routes
+      match '*unmatched_route', to: 'base#route_not_found', via: :all
+    end
+  end
+
+  # We can consider universal catch-all route here later
 end
