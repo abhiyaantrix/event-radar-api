@@ -64,6 +64,20 @@ gem 'strong_migrations'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem 'debug'
+  gem 'pry'
+  gem 'pry-doc'
+  gem 'pry-nav'
+  gem 'pry-rails'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
+  # gem 'pry-theme', '~> 1.3.1'
+  # gem 'pry-inline'
+  # gem 'pry-coolline', '~> 0.2.6'
+  # gem 'pry-clipboard', '~> 0.1.1'
+  # gem 'pry-awesome_print', '~> 9.6.11'
+
   # Tests
   gem 'rspec'
   gem 'rspec-parameterized'
@@ -145,17 +159,5 @@ group :development do
   gem 'spring-commands-rubocop'
   # # Makes spring watch files using the listen gem
   gem 'spring-watcher-listen'
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem 'debug', require: false
-  gem 'pry-doc', require: false
-  gem 'pry-nav', require: false
-  gem 'pry-rails', require: false
-  gem 'pry-rescue', require: false
-  gem 'pry-stack_explorer', require: false
-  # gem 'pry-theme', '~> 1.3.1'
-  # gem 'pry-inline'
-  # gem 'pry-coolline', '~> 0.2.6'
-  # gem 'pry-clipboard', '~> 0.1.1'
-  # gem 'pry-awesome_print', '~> 9.6.11'
   gem 'solargraph'
 end
