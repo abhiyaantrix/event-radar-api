@@ -23,19 +23,13 @@ AllCops:
     - 'tmp/**/*'
     - '.git/**/*'
     - '.bundle/**/*'
-    - 'config/environments/**/*'
     - 'db/structure.sql'
 
 # Rails
 Rails/FilePath:
   EnforcedStyle: arguments
-Rails/HasManyOrHasOneDependent: # Use foreign keys in DB
-  Enabled: false
 Rails/DynamicFindBy:
   Enabled: false
-Lint/MissingSuper:
-  Exclude:
-    - 'app/services/**/*'
 Rails/UnknownEnv:
   Environments:
     - production
@@ -47,29 +41,18 @@ Rails/UnknownEnv:
 RSpec/VariableName:
   EnforcedStyle: snake_case
 RSpec/NestedGroups:
-  Enabled: false
+  Max: 4
 RSpec/MessageSpies:
   Enabled: false
 RSpec/MultipleExpectations:
-  Enabled: false
+  Max: 5
 RSpec/MultipleMemoizedHelpers:
-  Max: 15
-RSpec/ExampleLength:
-  Enabled: false
-RSpec/AnyInstance:
-  Enabled: false
-RSpec/NamedSubject:
-  Exclude:
-    - 'spec/support/graphql_helper.rb'
-RSpec/EmptyExampleGroup:
-  Exclude:
-    - 'spec/graphql/**/*'
-RSpec/IndexedLet:
-  Enabled: false
+  Max: 7
 
 # Metrics
-Metrics/AbcSize:
-  Max: 50
+Metrics/MethodLength:
+  Max: 20
+  CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
 Metrics/BlockLength:
   Exclude:
     - 'Gemfile'
@@ -78,10 +61,8 @@ Metrics/BlockLength:
     - 'spec/**/*'
     - 'config/environments/development.rb'
     - 'config/routes.rb'
-Metrics/MethodLength:
-  Max: 50
 Metrics/ClassLength:
-  Max: 300
+  Max: 150
 Metrics/ModuleLength:
   Max: 150
 
