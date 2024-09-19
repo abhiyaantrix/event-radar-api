@@ -101,6 +101,10 @@ Layout/BlockAlignment:
   EnforcedStyleAlignWith: start_of_block
 Layout/EndAlignment:
   EnforcedStyleAlignWith: keyword
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
 
 # Style
 Style/StringLiterals:

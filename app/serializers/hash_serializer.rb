@@ -22,7 +22,7 @@ class HashSerializer
   def self.validate_value_type(value)
     unless value.is_a?(Hash) || value.is_a?(String)
       raise SerializationTypeMismatch,
-            "Expected 'Hash' or 'String' value but got #{value.class} => #{value.inspect}"
+        "Expected 'Hash' or 'String' value but got #{value.class} => #{value.inspect}"
     end
   end
 
