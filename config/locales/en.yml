@@ -36,10 +36,14 @@ en:
             only_json_accepted: 'Only JSON requests are accepted'
         response:
           ok: Success
-          internal_server_error: 'Internal server error'
-          unprocessable_content: 'Unprocessable content'
+          standard_error: 'Internal server error'
+          runtime_error: 'Internal server error'
           bad_request: 'Bad request'
+          record_not_saved: 'Unprocessable content: Record not saved'
           record_not_found: 'Resource not found'
+          routing_error: 'Resource not found'
+          record_invalid: 'Invalid record'
+          parameter_missing: 'Required parameters missing'
   activerecord:
     errors:
       models:
