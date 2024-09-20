@@ -10,6 +10,7 @@ module API
       # TODO: Render JSON
 
       include ErrorHandler
+      include Versionable
 
       before_action :ensure_json_request_format
 
