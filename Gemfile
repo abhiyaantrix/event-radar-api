@@ -27,7 +27,7 @@ gem 'sidekiq-scheduler', '~> 5.0.6'
 # gem "bcrypt", "~> 3.1.20"
 
 # Validate ActiveStorage attachments
-gem 'active_storage_validations', '~> 1.1.4'
+gem 'active_storage_validations', '~> 1.2.0'
 
 # Email validation
 gem 'valid_email2', '~> 5.3'
