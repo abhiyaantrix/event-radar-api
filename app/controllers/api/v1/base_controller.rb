@@ -9,6 +9,7 @@ module API
       # TODO: Handle Errors
       # TODO: Render JSON
 
+      # Depending on API V2 design, this can be moved to Application controller as needed
       include ErrorHandler
       include Versionable
 

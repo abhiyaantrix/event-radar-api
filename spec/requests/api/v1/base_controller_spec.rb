@@ -23,24 +23,17 @@ RSpec.describe API::V1::BaseController, type: :request do
 
   describe 'Request format' do
     context 'when JSON' do
-      before do
-        headers = { 'Accept' => Mime[:json].to_s }
-
-        get '/api/v1/base', headers: headers
-      end
+      before { get '/api/v1/base', headers: { 'Accept' => Mime[:json].to_s } }
 
       it 'allows request and responds with JSON' do
-        expect(response).to have_http_status(:ok)
+        expect(response).to be_successful
+
         expect(json_symbolize[:message]).to eq('Dummy action')
       end
     end
 
     context 'when non-JSON' do
-      before do
-        headers = { 'Accept' => Mime[:html].to_s }
-
-        get '/api/v1/base', headers: headers
-      end
+      before { get '/api/v1/base', headers: { 'Accept' => Mime[:html].to_s } }
 
       it 'responds with HTTP 406 - Not Acceptable' do
         expect(response).to have_http_status(:not_acceptable)

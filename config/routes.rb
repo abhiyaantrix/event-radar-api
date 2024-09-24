@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :users, only: [ :index ]
+
       # This must be the last route definition under the namespace
       # to catch-all route to handle missing routes
       match '*unmatched_route', to: 'base#route_not_found', via: :all
