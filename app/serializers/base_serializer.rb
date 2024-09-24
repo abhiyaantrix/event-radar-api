@@ -4,6 +4,8 @@ class BaseSerializer
 
   include Alba::Resource
 
-  transform_keys :lower_camel
+  root_key!
+
+  transform_keys :lower_camel, root: true
 
 end
