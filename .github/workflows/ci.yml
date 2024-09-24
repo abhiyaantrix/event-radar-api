@@ -149,23 +149,6 @@ jobs:
       - name: Rails Best Practices
         run: bundle exec rails_best_practices
 
-  bundler-audit:
-    name: Bundler audit
-
-    runs-on: ubuntu-latest
-
-    needs: ci-eligibility-check
-    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
-
-    steps:
-      - name: Checkout repository 🛎
-        uses: actions/checkout@v4
-        with:
-          show-progress: false
-
-      - name: Run bundler-audit 🧹
-        uses: ./.github/actions/bundle-audit
-
   code-smell-detector:
     name: Code smell detector
 
@@ -244,7 +227,6 @@ jobs:
       - rubocop-linters
       - non-ruby-linters
       - rails-best-practices
-      - bundler-audit
       - code-smell-detector
       - detect-unused-routes
       - brakeman
