@@ -7,14 +7,17 @@ RSpec.describe BaseSerializer do
 
   let(:dummy_record) { Struct.new(:some_attribute).new('some value') }
 
-  let!(:dummy_serializer) do
-    class DummySerializer < BaseSerializer
-
-      root_key!
-      attributes :some_attribute
-
-    end
+  before do
+    Object.const_set(
+      :DummySerializer,
+      Class.new(BaseSerializer) do
+        root_key!
+        attributes :some_attribute
+      end
+    )
   end
+
+  after { Object.send(:remove_const, :DummySerializer) }
 
   it "transforms key to lowerCame case" do
     expect(json_serialized).to eq("{\"dummy\":{\"someAttribute\":\"some value\"}}")
