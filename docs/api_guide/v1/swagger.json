@@ -1,0 +1,121 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Event Radar - REST API V1",
+    "description": "Full-featured event management JSON REST APIs. Designed to support a standalone, fully functional UI.",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/users": {
+      "get": {
+        "summary": "Paginated list of users for platform administration",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{defaultHost}",
+      "variables": {
+        "defaultHost": {
+          "default": "http://localhost:3000/"
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "user": {
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName",
+          "fullName",
+          "status",
+          "preferences",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minLength": 1,
+            "description": "Unique identifier for the user's account"
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "User's email"
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "User's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "User's Last name"
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 65535,
+            "description": "Full name of the user, in 'First Name Last Name' format"
+          },
+          "status": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 255,
+            "description": "User's account status, one of pending, active, archived"
+          },
+          "archivalReason": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 255,
+            "description": "Reason for archiving the user's account"
+          },
+          "preferences": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "theme": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Preferred theme, one of system, dark, light"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when the user account was created (ISO8601 format)"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time of the last update to the user account (ISO8601 format)"
+          }
+        }
+      }
+    }
+  }
+}
