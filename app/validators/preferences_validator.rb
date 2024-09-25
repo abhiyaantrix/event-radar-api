@@ -22,7 +22,7 @@ class PreferencesValidator < ActiveModel::EachValidator
   end
 
   def validate_theme(preferences, record)
-    valid_themes = User::THEMES
+    valid_themes = EventRadar::Config.themes
     theme = preferences['theme']
 
     if theme.present? && !valid_themes.include?(theme)

@@ -24,9 +24,6 @@
 #
 class User < ApplicationRecord
 
-  # TODO: Move this to Global Application Config class
-  THEMES = %w[system dark light].freeze
-
   after_initialize :set_default_preferences, if: :new_record?
   before_save :sanitize_names
 

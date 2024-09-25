@@ -102,6 +102,8 @@ RSpec.describe User, type: :model do
 
       context 'invalid theme preference' do
         before do
+          allow(EventRadar::Config).to receive('themes').and_return(%w[some_valid_theme])
+
           user.preference_theme = 'invalid_theme'
           user.valid?
         end
@@ -112,7 +114,7 @@ RSpec.describe User, type: :model do
           expect(user.errors[:preferences]).to include(
             I18n.t(
               'activerecord.errors.models.user.attributes.preferences.theme.invalid',
-              themes: User::THEMES.join(', ')
+              themes: EventRadar::Config.themes.join(', ')
             )
           )
         end
