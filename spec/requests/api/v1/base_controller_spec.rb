@@ -37,7 +37,7 @@ RSpec.describe API::V1::BaseController, type: :request do
 
       it 'responds with HTTP 406 - Not Acceptable' do
         expect(response).to have_http_status(:not_acceptable)
-        expect(json_symbolize[:error][:message]).to eq(I18n.t('api.v1.errors.request.format.only_json_accepted'))
+        expect(json_symbolize[:error][:message]).to eq(I18n.t('api.v1.request.errors.format.only_json_accepted'))
       end
     end
   end

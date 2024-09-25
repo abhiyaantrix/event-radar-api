@@ -144,7 +144,15 @@ on different components and architectural aspects.
 
 ## API Documentation
 
-TODO: Add Swagger/OpenAPI documentation
+[rswag](https://github.com/rswag/rswag) is used to write API specs and auto-generate OpenAPI v3 documentation.
+
+Each time [API specs](./spec/requests/api) are updated or created, refresh API documentation using
+
+```bash
+RAILS_ENV=test RSWAG_DRY_RUN=0 rails rswag PATTERN="spec/requests/api/**/*_spec.rb"
+```
+
+[API documentation](./docs/api_guide) is generated docs folder.
 
 ## User documentation
 

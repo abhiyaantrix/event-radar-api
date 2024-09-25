@@ -1,0 +1,114 @@
+---
+openapi: 3.0.3
+info:
+  title: Event Radar - REST API V1
+  description: Full-featured event management JSON REST APIs. Designed to support
+    a standalone, fully functional UI.
+  version: v1
+paths:
+  '/api/v1/users':
+    get:
+      summary: Paginated list of users for platform administration
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                - id: 1
+                  email: john@smith.example
+                  firstName: John
+                  lastName: Smith
+                  fullName: John Smith
+                  status: active
+                  preferences:
+                    theme: system
+                  createdAt: '2024-09-25T10:00:25Z'
+                  updatedAt: '2024-09-26T06:12:31Z'
+                - id: 2
+                  email: bruce@wayne.batman
+                  firstName: Bruce
+                  lastName: Wayne
+                  fullName: Bruce Wayne
+                  status: archived
+                  archivalReason: Some reason for account archival
+                  preferences:
+                    theme: dark
+                  createdAt: '2024-09-26T01:20:00Z'
+                  updatedAt: '2024-09-26T06:30:30Z'
+              schema:
+                type: array
+                items:
+                  '$ref': '#/components/schemas/user'
+servers:
+  - url: https://{defaultHost}
+    variables:
+      defaultHost:
+        default: www.example.com
+components:
+  schemas:
+    user:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - fullName
+        - status
+        - preferences
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: integer
+          minLength: 1
+          description: Unique identifier for the user's account
+        email:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: User's email
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: User's first name
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: User's Last name
+        fullName:
+          type: string
+          minLength: 0
+          maxLength: 65535
+          description: Full name of the user, in 'First Name Last Name' format
+        status:
+          type: string
+          minLength: 0
+          maxLength: 255
+          description: User's account status, one of pending, active, archived
+        archivalReason:
+          type: string
+          nullable: true
+          minLength: 0
+          maxLength: 255
+          description: Reason for archiving the user's account
+        preferences:
+          type: object
+          additionalProperties: false
+          properties:
+            theme:
+              type: string
+              minLength: 1
+              description: Preferred theme, one of system, dark, light
+        createdAt:
+          type: string
+          description: Date and time when the user account was created (ISO8601 format)
+        updatedAt:
+          type: string
+          description: Date and time of the last update to the user account (ISO8601
+            format)

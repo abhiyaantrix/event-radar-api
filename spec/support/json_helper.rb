@@ -19,11 +19,15 @@ module JsonHelper
   end
 
   def json_symbolize
-    @json_symbolize ||= json.deep_symbolize_keys
-  end
-
-  def json_with_indifferent_access
-    @json_with_indifferent_access ||= json.with_indifferent_access
+    @json_symbolize ||= begin
+      if json.is_a?(Hash)
+        json.deep_symbolize_keys
+      elsif json.is_a?(Array)
+        json.map { |item| item.is_a?(Hash) ? item.deep_symbolize_keys : item }
+      else
+        json
+      end
+    end
   end
 
 end
