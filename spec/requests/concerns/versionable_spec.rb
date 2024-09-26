@@ -31,11 +31,9 @@ RSpec.describe "API Versionable Concern", type: :request do
     Rails.application.reload_routes!
   end
 
-  let(:headers) {  { 'Accept' => Mime[:json].to_s } }
-
   context 'when valid version' do
     it 'returns success' do
-      get '/api/v1/test_versionable', headers: headers
+      get '/api/v1/test_versionable'
 
       expect(response).to have_http_status(:success)
       expect(json_symbolize[:message]).to eq("API version is v1")
@@ -45,7 +43,7 @@ RSpec.describe "API Versionable Concern", type: :request do
   context 'when invalid version' do
     it 'returns API version mismatch error' do
       expect {
-        get '/api/v2/test_versionable', headers: headers
+        get '/api/v2/test_versionable'
       }.to raise_error(Versionable::APIVersionMismatchError)
     end
   end

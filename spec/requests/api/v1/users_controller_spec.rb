@@ -1,59 +1,63 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'swagger_helper'
 
 RSpec.describe API::V1::UsersController, type: :request do
-  describe '#index' do
-    subject(:get_users) { get api_v1_users_path, headers: { 'Accept' => Mime[:json].to_s } }
+  path '/api/v1/users' do
+    let!(:users) { create_list(:user, 2) }
+    let(:expected_result) { JSON.parse(API::V1::UserSerializer.new(users).serialize) }
 
-    let!(:users) { create_list(:user, collection_size) }
+    get I18n.t('api.v1.endpoints.users.index') do
+      produces Mime[:json].to_s
 
-    let(:collection_size) { 4 }
-    let(:root_key) { :users }
+      tags User.to_s
 
-    let(:expected_keys) do
-      [
-        :id,
-        :email,
-        :firstName,
-        :lastName,
-        :fullName,
-        :status,
-        :preferences,
-        :createdAt,
-        :updatedAt
-      ]
-    end
+      response 200, I18n.t('api.v1.response.ok') do
+        after do |example|
+          content = example.metadata[:response][:content] || {}
 
-    describe 'response' do
-      before { get_users }
+          example_spec = {
+            Mime[:json].to_s => {
+              example: [
+                {
+                  id: 1,
+                  email: "john@smith.example",
+                  firstName: "John",
+                  lastName: "Smith",
+                  fullName: "John Smith",
+                  status: "active",
+                  preferences: {
+                    theme: 'system'
+                  },
+                  createdAt: "2024-09-25T10:00:25Z",
+                  updatedAt: "2024-09-26T06:12:31Z"
+                },
+                {
+                  id: 2,
+                  email: "bruce@wayne.batman",
+                  firstName: "Bruce",
+                  lastName: "Wayne",
+                  fullName: "Bruce Wayne",
+                  status: "archived",
+                  archivalReason: 'Some reason for account archival',
+                  preferences: {
+                    theme: 'dark'
+                  },
+                  createdAt: "2024-09-26T01:20:00Z",
+                  updatedAt: "2024-09-26T06:30:30Z"
+                }
+              ]
+            }
+          }
 
-      it 'responds with http success' do
-        expect(response).to be_successful
-      end
+          example.metadata[:response][:content] = content.deep_merge(example_spec)
+        end
 
-      it 'serializes users collection with expected attributes' do
-        expect(json_symbolize).to have_key(root_key)
+        schema type: :array, items: { '$ref' => '#/components/schemas/user' }
 
-        users = json_symbolize[root_key]
-
-        expect(users.size).to eq(collection_size)
-        expect(users.first.keys).to match_array(expected_keys)
-      end
-    end
-
-    context 'when user is archived' do
-      let(:archival_reason) { 'dummy reason' }
-      let!(:archived_user) { create(:user, status: :archived, archival_reason:) }
-
-      it 'includes archival_reason in the serialized output' do
-        get_users
-
-        archived_user_json = json_symbolize[root_key].find { |user| user[:id] == archived_user.id }
-
-        expect(archived_user_json[:status]).to eq(archived_user.status)
-        expect(archived_user_json).to have_key(:archivalReason)
-        expect(archived_user_json[:archivalReason]).to eq(archival_reason)
+        run_test! do |_response|
+          expect(json).to eq(expected_result)
+        end
       end
     end
   end

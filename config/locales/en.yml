@@ -30,20 +30,50 @@
 en:
   api:
     v1:
-      errors:
-        request:
+      info:
+        title: Event Radar - REST API V1
+        description: Full-featured event management JSON REST APIs. Designed to support a standalone, fully functional UI.
+      endpoints:
+        users:
+          index: Paginated list of users for platform administration
+      models:
+        user:
+          id:
+            description: Unique identifier for the user's account
+          email:
+            description: User's email
+          first_name:
+            description: User's first name
+          last_name:
+            description: User's Last name
+          full_name:
+            description: Full name of the user, in 'First Name Last Name' format
+          status:
+            description: User's account status, one of %{statuses}
+          archival_reason:
+            description: Reason for archiving the user's account
+          preferences:
+            theme:
+              description: Preferred theme, one of %{themes}
+          created_at:
+            description: Date and time when the user account was created (ISO8601 format)
+          updated_at:
+            description: Date and time of the last update to the user account (ISO8601 format)
+      response:
+        ok: Success
+        errors:
+          standard_error: Internal server error
+          runtime_error: Internal server error
+          bad_request: Bad request
+          record_not_saved: Unprocessable content - Record not saved
+          record_not_found: Resource not found
+          routing_error: Resource not found
+          record_invalid: Invalid record
+          parameter_missing: Required parameters missing
+      request:
+        errors:
           format:
-            only_json_accepted: 'Only JSON requests are accepted'
-        response:
-          ok: Success
-          standard_error: 'Internal server error'
-          runtime_error: 'Internal server error'
-          bad_request: 'Bad request'
-          record_not_saved: 'Unprocessable content: Record not saved'
-          record_not_found: 'Resource not found'
-          routing_error: 'Resource not found'
-          record_invalid: 'Invalid record'
-          parameter_missing: 'Required parameters missing'
+            only_json_accepted: Only JSON requests are accepted
   activerecord:
     errors:
       models:
@@ -51,6 +81,6 @@ en:
           attributes:
             preferences:
               format:
-                invalid: 'must be a valid JSON object'
+                invalid: must be a valid JSON object
               theme:
                 invalid: 'is not a valid theme. Available options: %{themes}'

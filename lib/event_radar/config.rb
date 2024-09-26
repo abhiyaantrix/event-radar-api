@@ -3,6 +3,9 @@
 module EventRadar
   class Config
 
+    VARCHAR_MAX_LENGTH = 255
+    TEXT_MAX_LENGTH = 65_535
+
     class << self
 
       def themes

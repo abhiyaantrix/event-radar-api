@@ -19,7 +19,7 @@ module API
 
       def ensure_json_request_format
         unless request.format.json?
-          respond_with_error(status: :not_acceptable, i18n_key: 'api.v1.errors.request.format.only_json_accepted')
+          respond_with_error(status: :not_acceptable, i18n_key: 'api.v1.request.errors.format.only_json_accepted')
         end
       end
 

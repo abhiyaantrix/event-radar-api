@@ -1,6 +1,7 @@
-# Omakase Ruby styling for Rails
 inherit_gem:
+  # Omakase Ruby styling for Rails
   rubocop-rails-omakase: rubocop.yml
+  rswag-specs: .rubocop_rspec_alias_config.yml
 
 require:
   # - rubocop-performance # included in omakase

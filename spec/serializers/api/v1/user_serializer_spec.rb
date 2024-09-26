@@ -9,17 +9,15 @@ RSpec.describe API::V1::UserSerializer, type: :serializer do
 
   let(:expected_user_data) do
     {
-      "user" => {
-        "id" => user.id,
-        "firstName" => user.first_name,
-        "lastName" => user.last_name,
-        "fullName" => user.full_name,
-        "email" => user.email,
-        "status" => user.status,
-        "preferences" => { "theme" => "dark" },
-        "createdAt" => user.created_at.iso8601,
-        "updatedAt" => user.updated_at.iso8601
-      }
+      "id" => user.id,
+      "firstName" => user.first_name,
+      "lastName" => user.last_name,
+      "fullName" => user.full_name,
+      "email" => user.email,
+      "status" => user.status,
+      "preferences" => { "theme" => "dark" },
+      "createdAt" => user.created_at.iso8601,
+      "updatedAt" => user.updated_at.iso8601
     }
   end
 
