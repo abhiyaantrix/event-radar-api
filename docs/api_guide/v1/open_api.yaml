@@ -49,6 +49,30 @@ servers:
         default: www.example.com
 components:
   schemas:
+    error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - key
+            - message
+          properties:
+            code:
+              type: integer
+              description: HTTP status code, this can also be acquired by inspecting
+                the actual response code from the issued HTTP request
+            key:
+              type: string
+              minLength: 1
+              description: Represents error message as keyword
+            message:
+              type: string
+              minLength: 1
+              description: Error message brief explanation
     user:
       type: object
       required:

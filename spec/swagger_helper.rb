@@ -38,6 +38,32 @@ RSpec.configure do |config|
       ],
       components: {
         schemas: {
+          error: {
+            type: :object,
+            required: %i[error],
+            properties: {
+              error: {
+                type: :object,
+                required: %i[code key message],
+                properties: {
+                  code: {
+                    type: :integer,
+                    description: I18n.t('api.v1.response.errors.code.description')
+                  },
+                  key: {
+                    type: :string,
+                    minLength: 1,
+                    description: I18n.t('api.v1.response.errors.key.description')
+                  },
+                  message: {
+                    type: :string,
+                    minLength: 1,
+                    description: I18n.t('api.v1.response.errors.message.description')
+                  }
+                }
+              }
+            }
+          },
           user: {
             type: :object,
             required: %I[id email firstName lastName fullName status preferences createdAt updatedAt],
