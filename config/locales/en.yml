@@ -62,6 +62,12 @@ en:
       response:
         ok: Success
         errors:
+          code:
+            description: HTTP status code, this can also be acquired by inspecting the actual response code from the issued HTTP request
+          key:
+            description: Represents error message as keyword
+          message:
+            description: Error message brief explanation
           standard_error: Internal server error
           runtime_error: Internal server error
           bad_request: Bad request

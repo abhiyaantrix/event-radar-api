@@ -14,7 +14,7 @@ RSpec.describe API::V1::UsersController, type: :request do
 
       response 200, I18n.t('api.v1.response.ok') do
         after do |example|
-          content = example.metadata[:response][:content] || {}
+          content = example.metadata.dig(:response, :content) || {}
 
           example_spec = {
             Mime[:json].to_s => {
@@ -55,7 +55,7 @@ RSpec.describe API::V1::UsersController, type: :request do
 
         schema type: :array, items: { '$ref' => '#/components/schemas/user' }
 
-        run_test! do |_response|
+        run_test! do
           expect(json).to eq(expected_result)
         end
       end
