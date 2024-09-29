@@ -22,6 +22,8 @@ This project is free of AI written code, just plain old pure human craftsmanship
 
 However, for certain blockers I have used AI to help me out, for example: incorrect configurations.
 
+For code reviews, [Sourcery AI](https://sourcery.ai/) is used to help catch obvious mistakes.
+
 ## Development
 
 ### Prerequisites
@@ -140,6 +142,21 @@ We also skip it for draft pull requests and also concurrency jobs are cancelled.
 
 Besides this quick start guide, check the detailed and dedicated [Developer documentation](./docs/developer_guide)
 on different components and architectural aspects.
+
+Specifically check [Architecture overview](./docs/developer_guide/architecture_overview.md)
+and [database design](./docs/developer_guide/database_design_overview.md) documentation.
+
+### Developer Documentation
+
+In addition to this quick start guide, detailed [developer documentation](./docs/developer_guide/) is available,
+covering various components and architectural aspects of the platform.
+
+Key sections
+
+- [Architecture Overview](./docs/developer_guide/architecture_overview.md)
+  For a comprehensive look at the platform's architecture and design principles
+- [Database Design](./docs/developer_guide/database_design_overview.md)
+  For an in-depth explanation of the database structure and relationships
 
 ## API Documentation
 
