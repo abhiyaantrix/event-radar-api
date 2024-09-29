@@ -1,6 +1,6 @@
 # Event Radar API
 
-An all in one event management system made easy for the modern era to manage events, attendees, and more.
+An all in one event management platform made easy for the modern era to manage events, attendees, and more.
 
 This is the API only backend application, user facing frontend is available at
 [Event Radar Web](https://github.com/abhiyaantrix/event-radar-web)
@@ -9,11 +9,10 @@ Both can be independently deployed and scaled separately.
 
 ## Why
 
-Started this project with two purposes
+Started this project with these purposes
 
-1. Brush up on my Ruby on Rails skills
-2. Portfolio project
-3. Experiment with new technologies
+1. Refresh my Ruby on Rails skills
+2. Simple yet comprehensive portfolio project
 
 ### Note
 
