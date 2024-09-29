@@ -1,7 +1,5 @@
 # Architecture Overview
 
-## Introduction
-
 Event Radar is an all-in-one event management platform, allowing users to create, manage, and participate in events.
 The system is designed with scalability and modularity in mind, leveraging external cloud services to handle key
 functionalities such as hosting, payments, and notifications.
@@ -24,6 +22,9 @@ A single user can assume multiple roles simultaneously.
 - **Participant**: Users who join and attend events.
 - **Organizer**: Users who organize and moderate events, conferences.
 - **Admin**: Platform administrators who manage users and oversee platform operations.
+
+Participant and Organizer roles are intentionally kept separate to give us better flexibility
+if there is a need to lock event organization to specific group of users only.
 
 ### Core System
 
