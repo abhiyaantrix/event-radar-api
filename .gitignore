@@ -51,3 +51,6 @@ npm-debug.log*
 # IDE
 .vscode
 .idea
+
+# Diagrams
+*.drawio.bkp
