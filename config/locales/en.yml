@@ -90,3 +90,7 @@ en:
                 invalid: must be a valid JSON object
               theme:
                 invalid: 'is not a valid theme. Available options: %{themes}'
+        event_organizer:
+          attributes:
+            user:
+              taken: 'event is already assigned to this user'

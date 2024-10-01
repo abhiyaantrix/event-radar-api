@@ -35,7 +35,7 @@ RSpec.describe User, type: :model do
 
     describe 'name sanitization' do
       context 'with leading and trailing spaces' do
-        subject(:user) { create(:user, first_name: '  John  ', last_name: 'Doe') }
+        let(:user) { create(:user, first_name: '  John  ', last_name: 'Doe') }
 
         it 'strips spaces from names' do
           expect(user.first_name).to eq('John')
@@ -45,8 +45,15 @@ RSpec.describe User, type: :model do
       end
     end
 
+    describe '#associations' do
+      it { is_expected.to have_many(:event_organizers).inverse_of(:user) }
+      it {
+        is_expected.to have_many(:organized_events).through(:event_organizers).inverse_of(:organizers).source(:event)
+      }
+    end
+
     describe '#full_name' do
-      subject(:user) { create(:user) }
+      let(:user) { create(:user) }
 
       it 'sets full name' do
         expect(user.full_name).to eq("#{user.first_name} #{user.last_name}")
@@ -70,20 +77,20 @@ RSpec.describe User, type: :model do
     end
 
     describe 'user pending confirmation' do
-      subject(:user) { build(:user, :pending) }
+      let(:user) { build(:user, :pending) }
 
       it { is_expected.to be_valid }
     end
 
     describe 'archived user' do
       context 'with reason' do
-        subject(:user) { build(:user, :archived) }
+        let(:user) { build(:user, :archived) }
 
         it { is_expected.to be_valid }
       end
 
       context 'without reason' do
-        subject(:user) { build(:user, :archived, archival_reason: nil) }
+        let!(:user) { build(:user, :archived, archival_reason: nil) }
 
         it { is_expected.to be_invalid }
       end

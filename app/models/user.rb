@@ -27,6 +27,9 @@ class User < ApplicationRecord
   after_initialize :set_default_preferences, if: :new_record?
   before_save :sanitize_names
 
+  has_many :event_organizers, inverse_of: :user
+  has_many :organized_events, through: :event_organizers, source: :event, inverse_of: :organizers
+
   validates :first_name, presence: true
   validates :last_name, presence: true
 
