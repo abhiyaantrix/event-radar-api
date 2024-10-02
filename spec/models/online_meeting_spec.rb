@@ -31,15 +31,12 @@ RSpec.describe OnlineMeeting, type: :model do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:start_time) }
 
-    it "defaults to 'draft' status" do
-      expect(online_meeting.status).to eq('draft')
-    end
-
-    include_examples 'time_range_validations'
+    include_examples 'status validations'
+    include_examples 'time range validations'
   end
 
   describe '.statuses' do
-    it "maps correct status values" do
+    it 'maps correct status values' do
       expect(OnlineMeeting.statuses).to eq({ 'draft' => 0, 'published' => 1, 'cancelled' => 2, 'archived' => 3 })
     end
   end

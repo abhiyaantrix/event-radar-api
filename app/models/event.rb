@@ -31,6 +31,7 @@ class Event < ApplicationRecord
 
   # Validations
   validates :title, :start_time, presence: true
+  validates :status, presence: true, inclusion: { in: statuses.keys }
   validates :end_time, allow_nil: true, time_range: true
   validates :start_time, time_range: true
 

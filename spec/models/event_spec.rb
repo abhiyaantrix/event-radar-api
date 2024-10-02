@@ -26,15 +26,12 @@ RSpec.describe Event, type: :model do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:start_time) }
 
-    it "defaults to 'draft' status" do
-      expect(event.status).to eq('draft')
-    end
-
-    include_examples 'time_range_validations'
+    include_examples 'status validations'
+    include_examples 'time range validations'
   end
 
   describe '.statuses' do
-    it "maps correct status values" do
+    it 'maps correct status values' do
       expect(Event.statuses).to eq({ 'draft' => 0, 'published' => 1, 'cancelled' => 2, 'archived' => 3 })
     end
   end
@@ -44,22 +41,5 @@ RSpec.describe Event, type: :model do
     it { is_expected.to have_many(:organizers).through(:event_organizers).inverse_of(:organized_events).source(:user) }
     it { is_expected.to have_many(:online_meetings).dependent(:destroy).inverse_of(:event) }
     it { is_expected.to have_many(:offline_meetings).dependent(:destroy).inverse_of(:event) }
-  end
-
-  describe 'event types' do
-    context 'when both online and offline meetings' do
-      xit 'reports hybrid event type' do
-      end
-    end
-
-    context 'when only online meetings' do
-      xit 'reports online event type' do
-      end
-    end
-
-    context 'when only offline event' do
-      xit 'reports offline event type' do
-      end
-    end
   end
 end
