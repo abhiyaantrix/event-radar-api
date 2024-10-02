@@ -7,6 +7,7 @@
 #  id         :bigint           not null, primary key
 #  end_time   :datetime
 #  start_time :datetime         not null
+#  status     :integer          default(0), not null
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -25,8 +26,13 @@ class OnlineMeeting < ApplicationRecord
 
   # TODO: Add support for setting up online meeting using services like Zoom, Google meet and Microsoft teams
 
+  # Associations
   belongs_to :event, inverse_of: :online_meetings
 
+  # Enums
+  enum status: { draft: 0, published: 1, cancelled: 2, archived: 3  }
+
+  # Validations
   validates :title, :start_time, presence: true
   validates :end_time, allow_nil: true, time_range: true
   validates :start_time, time_range: true

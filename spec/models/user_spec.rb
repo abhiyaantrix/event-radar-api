@@ -45,13 +45,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#associations' do
-      it { is_expected.to have_many(:event_organizers).inverse_of(:user) }
-      it {
-        is_expected.to have_many(:organized_events).through(:event_organizers).inverse_of(:organizers).source(:event)
-      }
-    end
-
     describe '#full_name' do
       let(:user) { create(:user) }
 
@@ -142,5 +135,18 @@ RSpec.describe User, type: :model do
         end
       end
     end
+  end
+
+  describe '.statuses' do
+    it "maps correct status values" do
+      expect(User.statuses).to eq({ 'pending' => 0, 'active' => 1, 'archived' => 2 })
+    end
+  end
+
+  describe '#associations' do
+    it { is_expected.to have_many(:event_organizers).inverse_of(:user) }
+    it {
+      is_expected.to have_many(:organized_events).through(:event_organizers).inverse_of(:organizers).source(:event)
+    }
   end
 end

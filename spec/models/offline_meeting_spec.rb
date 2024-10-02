@@ -7,6 +7,7 @@
 #  id         :bigint           not null, primary key
 #  end_time   :datetime
 #  start_time :datetime         not null
+#  status     :integer          default(0), not null
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -30,7 +31,17 @@ RSpec.describe OfflineMeeting, type: :model do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:start_time) }
 
+    it "defaults to 'draft' status" do
+      expect(offline_meeting.status).to eq('draft')
+    end
+
     include_examples 'time_range_validations'
+  end
+
+  describe '.statuses' do
+    it "maps correct status values" do
+      expect(OfflineMeeting.statuses).to eq({ 'draft' => 0, 'published' => 1, 'cancelled' => 2, 'archived' => 3 })
+    end
   end
 
   describe '#associations' do

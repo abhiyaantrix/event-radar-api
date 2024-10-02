@@ -8,6 +8,7 @@
 #  description :text             not null
 #  end_time    :datetime
 #  start_time  :datetime         not null
+#  status      :integer          default(0), not null
 #  title       :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -18,12 +19,17 @@
 #
 class Event < ApplicationRecord
 
+  # Associations
   has_many :event_organizers, inverse_of: :event
   has_many :organizers, through: :event_organizers, source: :user, inverse_of: :organized_events
 
   has_many :online_meetings, dependent: :destroy, inverse_of: :event
   has_many :offline_meetings, dependent: :destroy, inverse_of: :event
 
+  # Enums
+  enum status: { draft: 0, published: 1, cancelled: 2, archived: 3  }
+
+  # Validations
   validates :title, :start_time, presence: true
   validates :end_time, allow_nil: true, time_range: true
   validates :start_time, time_range: true
