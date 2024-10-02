@@ -54,7 +54,7 @@ module ErrorHandler
   def handle_error(exception)
     status, i18n_key = ERROR_MAPPINGS.fetch(exception.class, ERROR_MAPPINGS[StandardError])
 
-    respond_with_error(status: status, i18n_key: i18n_key)
+    respond_with_error(status:, i18n_key:)
   end
 
   def respond_with_error(status:, i18n_key:, i18n_variables: {})

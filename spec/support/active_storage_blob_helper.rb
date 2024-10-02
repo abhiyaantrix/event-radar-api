@@ -7,11 +7,11 @@ module ActiveStorageBlobHelper
     path = tempfile.path
     filename = File.basename(path)
     uploaded_file = ActionDispatch::Http::UploadedFile.new(
-      filename: filename, tempfile:
+      filename:, tempfile:
     )
 
     ActiveStorage::Blob.create_and_upload!(
-      io: uploaded_file, filename: filename, content_type:
+      io: uploaded_file, filename:, content_type:
     )
   end
 

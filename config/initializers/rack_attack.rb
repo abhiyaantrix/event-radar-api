@@ -23,7 +23,7 @@ Rack::Attack.throttled_responder = lambda do |request|
   }
 
   message = 'Throttled'
-  response_body = request.env['HTTP_ACCEPT'].eql?('application/json') ? JSON.dump({ message: message }) : message
+  response_body = request.env['HTTP_ACCEPT'].eql?('application/json') ? JSON.dump({ message: }) : message
 
   # TODO: Log or subscribe to this for alerting
 
