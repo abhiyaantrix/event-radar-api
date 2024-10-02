@@ -13,8 +13,8 @@
 # Indexes
 #
 #  index_event_organizers_on_event_id              (event_id)
-#  index_event_organizers_on_event_id_and_user_id  (event_id,user_id) UNIQUE
 #  index_event_organizers_on_user_id               (user_id)
+#  index_event_organizers_on_user_id_and_event_id  (user_id,event_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -23,9 +23,11 @@
 #
 class EventOrganizer < ApplicationRecord
 
+  # Associations
   belongs_to :event, inverse_of: :event_organizers
   belongs_to :user, inverse_of: :event_organizers
 
+  # Validations
   validates :user, uniqueness: { scope: :event }
 
   # TODO: Ensure only active users can be assigned to an event

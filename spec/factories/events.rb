@@ -8,6 +8,7 @@
 #  description :text             not null
 #  end_time    :datetime
 #  start_time  :datetime         not null
+#  status      :integer          default(0), not null
 #  title       :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -20,6 +21,7 @@ FactoryBot.define do
   factory :event, traits: [ :future ] do
     title { "event-#{Faker::Lorem.sentence(word_count: 3)}" }
     description { Faker::Lorem.paragraph }
+    status { :draft }
 
     # Shared time range traits from 'event_time_range_traits.rb'
     future

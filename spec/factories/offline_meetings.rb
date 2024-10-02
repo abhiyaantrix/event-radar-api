@@ -7,6 +7,7 @@
 #  id         :bigint           not null, primary key
 #  end_time   :datetime
 #  start_time :datetime         not null
+#  status     :integer          default(0), not null
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -24,6 +25,7 @@
 FactoryBot.define do
   factory :offline_meeting, traits: [ :future ] do
     title { "offline-meeting-#{Faker::Lorem.sentence(word_count: 3)}" }
+    status { :draft }
 
     association :event
 

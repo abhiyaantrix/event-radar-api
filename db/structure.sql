@@ -92,6 +92,7 @@ CREATE TABLE public.events (
     end_time timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    status smallint DEFAULT 0 NOT NULL,
     CONSTRAINT chk_rails_2d23c98cce CHECK (((end_time IS NULL) OR (end_time > start_time)))
 );
 
@@ -127,6 +128,7 @@ CREATE TABLE public.offline_meetings (
     event_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    status smallint DEFAULT 0 NOT NULL,
     CONSTRAINT chk_rails_538f471a96 CHECK (((end_time IS NULL) OR (end_time > start_time)))
 );
 
@@ -162,6 +164,7 @@ CREATE TABLE public.online_meetings (
     event_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    status smallint DEFAULT 0 NOT NULL,
     CONSTRAINT chk_rails_d12176be61 CHECK (((end_time IS NULL) OR (end_time > start_time)))
 );
 
@@ -453,6 +456,9 @@ ALTER TABLE ONLY public.online_meetings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241002173300'),
+('20241002173252'),
+('20241002173107'),
 ('20241001203231'),
 ('20241001203225'),
 ('20241001203219'),

@@ -27,9 +27,14 @@ class User < ApplicationRecord
   after_initialize :set_default_preferences, if: :new_record?
   before_save :sanitize_names
 
+  # Associations
   has_many :event_organizers, inverse_of: :user
   has_many :organized_events, through: :event_organizers, source: :event, inverse_of: :organizers
 
+  # Enums
+  enum :status, { pending: 0, active: 1, archived: 2 }
+
+  # Validations
   validates :first_name, presence: true
   validates :last_name, presence: true
 
@@ -41,8 +46,6 @@ class User < ApplicationRecord
   validates :preferences, preferences: true
 
   validates :archival_reason, presence: true, if: :archived?
-
-  enum :status, { pending: 0, active: 1, archived: 2 }
 
   private
 
