@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# spec/support/shared_examples/time_range_validations.rb
-
-RSpec.shared_examples 'time_range_validations' do
+RSpec.shared_examples 'time range validations' do
   let(:model_name) { described_class.to_s.underscore }
 
   describe 'time range validations' do
