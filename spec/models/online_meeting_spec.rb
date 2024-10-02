@@ -30,18 +30,7 @@ RSpec.describe OnlineMeeting, type: :model do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:start_time) }
 
-    context 'when nil end_time (open ended)' do
-      let(:open_ended_meeting) { build(:online_meeting, :open_ended) }
-
-      it 'is expected to be valid' do
-        expect(open_ended_meeting).to be_valid
-      end
-    end
-
-    context 'when end_time is earlier than start_time' do
-      xit 'is expected to be invalid' do
-      end
-    end
+    include_examples 'time_range_validations'
   end
 
   describe '#associations' do

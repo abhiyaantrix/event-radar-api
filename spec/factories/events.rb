@@ -21,25 +21,11 @@ FactoryBot.define do
     title { "event-#{Faker::Lorem.sentence(word_count: 3)}" }
     description { Faker::Lorem.paragraph }
 
-    start_time { Faker::Time.between(from: DateTime.now + 1.day, to: DateTime.now + 5.days, format: :default) }
-
-    trait :future do
-      end_time { Faker::Time.between(from: DateTime.now + 5.days, to: DateTime.now + 10.days, format: :default) }
-    end
-
-    trait :past do
-      start_time { Faker::Time.between(from: DateTime.now - 10.days, to: DateTime.now - 5.days, format: :default) }
-      end_time { Faker::Time.between(from: DateTime.now - 5.days, to: DateTime.now - 1.day, format: :default) }
-    end
-
-    trait :ongoing do
-      start_time { Faker::Time.between(from: DateTime.now - 1.day, to: DateTime.now, format: :default) }
-      end_time { Faker::Time.between(from: DateTime.now + 1.hour, to: DateTime.now + 2.days, format: :default) }
-    end
-
-    trait :open_ended do
-      end_time { nil }
-    end
+    # Shared time range traits from 'event_time_range_traits.rb'
+    future
+    past
+    ongoing
+    open_ended
 
     trait :with_online_meeting do
       after(:create) do |event|

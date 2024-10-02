@@ -28,6 +28,7 @@ class OfflineMeeting < ApplicationRecord
   belongs_to :event, inverse_of: :offline_meetings
 
   validates :title, :start_time, presence: true
-  # TODO: If end_time is present, ensure it is later than start_time
+  validates :end_time, allow_nil: true, time_range: true
+  validates :start_time, time_range: true
 
 end

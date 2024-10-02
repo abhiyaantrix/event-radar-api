@@ -25,8 +25,8 @@ class Event < ApplicationRecord
   has_many :offline_meetings, dependent: :destroy, inverse_of: :event
 
   validates :title, :start_time, presence: true
-  # TODO: If end_time is present, ensure it is later than start_time
-  # TODO: Validate start and end time to be in future and be valid date
+  validates :end_time, allow_nil: true, time_range: true
+  validates :start_time, time_range: true
 
   # TODO: Add helper methods to determine online?, offline? or hybrid? events
 

@@ -93,4 +93,22 @@ en:
         event_organizer:
           attributes:
             user:
-              taken: 'event is already assigned to this user'
+              taken: event is already assigned to this user
+        event:
+          attributes:
+            start_time:
+              invalid_time_range: must be before the end time
+            end_time:
+              invalid_time_range: must be after the start time
+        online_meeting:
+          attributes:
+            start_time:
+              invalid_time_range: must be before the end time
+            end_time:
+              invalid_time_range: must be after the start time
+        offline_meeting:
+          attributes:
+            start_time:
+              invalid_time_range: must be before the end time
+            end_time:
+              invalid_time_range: must be after the start time
