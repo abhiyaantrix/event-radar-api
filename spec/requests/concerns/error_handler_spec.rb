@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe 'API Error Handler Concern', type: :request do
+RSpec.describe ErrorHandler, type: :request do
   before(:all) do
     module API
       module V1
-        class TestController < ApplicationController
+        class ErrorHandlerTestController < ApplicationController
 
           include ErrorHandler
 
@@ -19,20 +19,24 @@ RSpec.describe 'API Error Handler Concern', type: :request do
     Rails.application.routes.draw do
       namespace :api do
         namespace :v1 do
-          resources :test, only: [ :index ]
+          resources :error_handler_test, only: [ :index ]
         end
       end
     end
   end
 
-  after(:all) { Rails.application.reload_routes! }
+  after(:all) do
+    Rails.application.reload_routes!
+
+    API::V1.send(:remove_const, :ErrorHandlerTestController)
+  end
 
   describe 'Error handlers' do
     shared_examples 'error handler' do |error_class, status, message_key|
       before do
-        allow_any_instance_of(API::V1::TestController).to receive(:index).and_raise(error_class)
+        allow_any_instance_of(API::V1::ErrorHandlerTestController).to receive(:index).and_raise(error_class)
 
-        get '/api/v1/test'
+        get '/api/v1/error_handler_test'
       end
 
       it "handles #{error_class} correctly" do
