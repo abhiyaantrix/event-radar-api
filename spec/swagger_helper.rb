@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.configure do |config|
+  config.include SwaggerHelpers
+
   config.openapi_root = Rails.root.join('docs', 'api_guide').to_s
 
   # Specify the format of the output Swagger file when running 'rswag:specs:swaggerize'.
@@ -37,6 +39,17 @@ RSpec.configure do |config|
         }
       ],
       components: {
+        parameters: {
+          event_id: {
+            name: :event_id,
+            in: :path,
+            required: true,
+            schema: {
+              type: :string
+            },
+            description: I18n.t('api.v1.models.event.id.description')
+          }
+        },
         schemas: {
           error: {
             type: :object,

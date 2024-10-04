@@ -22,3 +22,6 @@ directories:
   'app/validators':
     UtilityFunction:
       enabled: false
+  'spec/support':
+    UtilityFunction:
+      enabled: false

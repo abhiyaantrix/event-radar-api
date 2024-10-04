@@ -38,6 +38,7 @@ en:
           index: Paginated list of users for platform administration
         events:
           index: Paginated list of events
+          show: Get single event
       models:
         user:
           id:
