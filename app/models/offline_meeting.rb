@@ -26,6 +26,24 @@ class OfflineMeeting < ApplicationRecord
 
   # TODO: Add support for physical address, it should be validated with maps API
 
+  include SimpleStateMachine
+
+  ALLOWED_STATUS_TRANSITIONS = {
+    draft: {
+      published: {}.freeze,
+      archived: {}.freeze
+    },
+    published: {
+      draft: { if: ->(meeting) { !meeting.event.published? } }.freeze,
+      cancelled: {}.freeze,
+      archived: {}.freeze
+    },
+    cancelled: {
+      archived: {}.freeze
+    },
+    archived: {}.freeze
+  }.freeze
+
   # Associations
   belongs_to :event, inverse_of: :offline_meetings
 
@@ -37,5 +55,7 @@ class OfflineMeeting < ApplicationRecord
   validates :status, presence: true, inclusion: { in: statuses.keys }
   validates :end_time, allow_nil: true, time_range: true
   validates :start_time, time_range: true
+
+  validate :ensure_valid_status_transition, on: :update, if: :status_changed?
 
 end
