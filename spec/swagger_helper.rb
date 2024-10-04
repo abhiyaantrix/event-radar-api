@@ -70,7 +70,7 @@ RSpec.configure do |config|
             properties: {
               id: {
                 type: :integer,
-                minLength: 1,
+                minimum: 1,
                 description: I18n.t('api.v1.models.user.id.description')
               },
               email: {
@@ -99,12 +99,8 @@ RSpec.configure do |config|
               },
               status: {
                 type: :string,
-                minLength: 0,
-                maxLength: EventRadar::Config::VARCHAR_MAX_LENGTH,
-                description: I18n.t(
-                  'api.v1.models.user.status.description',
-                  statuses: User.statuses.keys.join(', ')
-                )
+                enum: User.statuses.keys,
+                description: I18n.t('api.v1.models.user.status.description')
               },
               archivalReason: {
                 type: :string,
@@ -134,6 +130,51 @@ RSpec.configure do |config|
               updatedAt: {
                 type: :string,
                 description: I18n.t('api.v1.models.user.updated_at.description')
+              }
+            }
+          },
+          event: {
+            type: :object,
+            required: %I[id title description status startTime endTime createdAt updatedAt],
+            properties: {
+              id: {
+                type: :integer,
+                minimum: 1,
+                description: I18n.t('api.v1.models.event.id.description')
+              },
+              title: {
+                type: :string,
+                minLength: 1,
+                maxLength: EventRadar::Config::VARCHAR_MAX_LENGTH,
+                description: I18n.t('api.v1.models.event.title.description')
+              },
+              description: {
+                type: :string,
+                minLength: 1,
+                maxLength: EventRadar::Config::VARCHAR_MAX_LENGTH,
+                description: I18n.t('api.v1.models.event.description.description')
+              },
+              status: {
+                type: :string,
+                enum: Event.statuses.keys,
+                description: I18n.t('api.v1.models.event.status.description')
+              },
+              startTime: {
+                type: :string,
+                description: I18n.t('api.v1.models.event.start_time.description')
+              },
+              endTime: {
+                type: :string,
+                nullable: true,
+                description: I18n.t('api.v1.models.event.end_time.description')
+              },
+              createdAt: {
+                type: :string,
+                description: I18n.t('api.v1.models.event.created_at.description')
+              },
+              updatedAt: {
+                type: :string,
+                description: I18n.t('api.v1.models.event.updated_at.description')
               }
             }
           }

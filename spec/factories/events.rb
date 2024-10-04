@@ -18,7 +18,7 @@
 #  index_events_on_start_time  (start_time)
 #
 FactoryBot.define do
-  factory :event, traits: [ :future ] do
+  factory :event do
     title { "event-#{Faker::Lorem.sentence(word_count: 3)}" }
     description { Faker::Lorem.paragraph }
     status { :draft }

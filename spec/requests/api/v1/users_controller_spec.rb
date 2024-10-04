@@ -5,7 +5,8 @@ require 'swagger_helper'
 RSpec.describe API::V1::UsersController, type: :request do
   path '/api/v1/users' do
     let!(:users) { create_list(:user, 2) }
-    let(:expected_result) { JSON.parse(API::V1::UserSerializer.new(users).serialize) }
+
+    let(:expected_data) { JSON.parse(API::V1::UserSerializer.new(users).serialize) }
 
     get I18n.t('api.v1.endpoints.users.index') do
       produces Mime[:json].to_s
@@ -56,7 +57,7 @@ RSpec.describe API::V1::UsersController, type: :request do
         schema type: :array, items: { '$ref' => '#/components/schemas/user' }
 
         run_test! do
-          expect(json).to eq(expected_result)
+          expect(json).to eq(expected_data)
         end
       end
     end

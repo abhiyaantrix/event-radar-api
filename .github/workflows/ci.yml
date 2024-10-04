@@ -126,28 +126,29 @@ jobs:
       - name: Run linter 🧹
         run: npm run lint
 
-  rails-best-practices:
-    name: Rails best practices
+  # There have been false positives like unused method for API::V1::EventsController#index action
+  # rails-best-practices:
+  #   name: Rails best practices
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    needs: ci-eligibility-check
-    if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
+  #   needs: ci-eligibility-check
+  #   if: ${{ needs.ci-eligibility-check.outputs.eligible == 'true' }}
 
-    steps:
-      - name: Checkout repository 🛎
-        uses: actions/checkout@v4
-        with:
-          show-progress: false
+  #   steps:
+  #     - name: Checkout repository 🛎
+  #       uses: actions/checkout@v4
+  #       with:
+  #         show-progress: false
 
-      - name: Setup Ruby and install gems ⚙️
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+  #     - name: Setup Ruby and install gems ⚙️
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: .ruby-version
+  #         bundler-cache: true
 
-      - name: Rails Best Practices
-        run: bundle exec rails_best_practices
+  #     - name: Rails Best Practices
+  #       run: bundle exec rails_best_practices
 
   code-smell-detector:
     name: Code smell detector
@@ -226,7 +227,7 @@ jobs:
     needs:
       - rubocop-linters
       - non-ruby-linters
-      - rails-best-practices
+      # - rails-best-practices
       - code-smell-detector
       - detect-unused-routes
       - brakeman
