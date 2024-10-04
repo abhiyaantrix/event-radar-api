@@ -29,6 +29,7 @@ RSpec.describe OfflineMeeting, type: :model do
 
   describe '#validations' do
     it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:status) }
     it { is_expected.to validate_presence_of(:start_time) }
 
     include_examples 'status validations'
@@ -36,12 +37,91 @@ RSpec.describe OfflineMeeting, type: :model do
   end
 
   describe '.statuses' do
-    it 'maps correct status values' do
-      expect(OfflineMeeting.statuses).to eq({ 'draft' => 0, 'published' => 1, 'cancelled' => 2, 'archived' => 3 })
-    end
+    it { is_expected.to define_enum_for(:status).with_values(draft: 0, published: 1, cancelled: 2, archived: 3) }
   end
 
   describe '#associations' do
     it { is_expected.to belong_to(:event).inverse_of(:offline_meetings) }
+  end
+
+  describe 'state machine transitions' do
+    using RSpec::Parameterized::TableSyntax
+
+    let(:expected_error_message) do
+      lambda do |from, to|
+        I18n.t(
+          'activerecord.errors.models.offline_meeting.attributes.status.invalid_transition',
+          from:,
+          to:
+        )
+      end
+    end
+
+    context 'valid transitions' do
+      where(:case_name, :from_state, :to_state) do
+        [
+          [ 'from draft to published',      :draft,     :published ],
+          [ 'from draft to archived',       :draft,     :archived ],
+          [ 'from published to cancelled',  :published, :cancelled ],
+          [ 'from published to archived',   :published, :archived ],
+          [ 'from cancelled to archived',   :cancelled, :archived ]
+        ]
+      end
+
+      with_them do
+        let(:offline_meeting) { create(:offline_meeting, status: from_state) }
+
+        before { offline_meeting.status = to_state }
+
+        it { expect(offline_meeting).to be_valid }
+      end
+
+      context 'when event is not published yet' do
+        let(:event) { create(:event, status: :draft) }
+        let(:offline_meeting) { create(:offline_meeting, event:, status: :published) }
+
+        before { offline_meeting.status = :draft }
+
+        it 'allows transition from published to draft' do
+          expect(offline_meeting).to be_valid
+        end
+      end
+    end
+
+    context 'invalid transitions' do
+      where(:case_name, :from_state, :to_state) do
+        [
+          [ 'from draft to cancelled',     :draft,     :cancelled ],
+          [ 'from cancelled to draft',     :cancelled, :draft ],
+          [ 'from cancelled to published', :cancelled, :published ],
+          [ 'from archived to draft',      :archived,  :draft ],
+          [ 'from archived to published',  :archived,  :published ],
+          [ 'from archived to cancelled',  :archived,  :cancelled ]
+        ]
+      end
+
+      with_them do
+        let(:offline_meeting) { create(:offline_meeting, status: from_state) }
+
+        before { offline_meeting.status = to_state }
+
+        it do
+          expect(offline_meeting).not_to be_valid
+          expect(offline_meeting.errors[:status]).to include(expected_error_message.call(from_state, to_state))
+        end
+      end
+
+      context 'when event is already published' do
+        let(:event) { create(:event, status: :published) }
+        let(:offline_meeting) { create(:offline_meeting, event:, status: :published) }
+
+        before { offline_meeting.status = :draft }
+
+        it 'disallows transition from published to draft' do
+          expect(offline_meeting).not_to be_valid
+          expect(offline_meeting.errors[:status]).to include(expected_error_message.call(:published, :draft))
+        end
+      end
+    end
   end
 end

@@ -26,6 +26,24 @@ class OnlineMeeting < ApplicationRecord
 
   # TODO: Add support for setting up online meeting using services like Zoom, Google meet and Microsoft teams
 
+  include SimpleStateMachine
+
+  ALLOWED_STATUS_TRANSITIONS = {
+    draft: {
+      published: {}.freeze,
+      archived: {}.freeze
+    },
+    published: {
+      draft: { if: ->(meeting) { !meeting.event.published? } }.freeze,
+      cancelled: {}.freeze,
+      archived: {}.freeze
+    },
+    cancelled: {
+      archived: {}.freeze
+    },
+    archived: {}.freeze
+  }.freeze
+
   # Associations
   belongs_to :event, inverse_of: :online_meetings
 
@@ -37,5 +55,7 @@ class OnlineMeeting < ApplicationRecord
   validates :status, presence: true, inclusion: { in: statuses.keys }
   validates :end_time, allow_nil: true, time_range: true
   validates :start_time, time_range: true
+
+  validate :ensure_valid_status_transition, on: :update, if: :status_changed?
 
 end

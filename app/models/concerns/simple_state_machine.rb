@@ -28,8 +28,6 @@ module SimpleStateMachine
   #     archived: {}.freeze
   #   }.freeze
   included do
-    validate :ensure_valid_status_transition, if: :status_changed?
-
     # Validates if the transition from the old status to the new status is allowed
     # It checks against the ALLOWED_STATUS_TRANSITIONS constant defined in the model
     # If the transition is not allowed, it adds an error to the model

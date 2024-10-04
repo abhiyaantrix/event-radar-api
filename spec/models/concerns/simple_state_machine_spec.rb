@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SimpleStateMachine, type: :model do
-  subject(:test_model) { SimpleStateMachineTest.new(status: :draft) }
+  subject(:test_model) { SimpleStateMachineTest.create(status: :draft) }
 
   before(:all) do
     ActiveRecord::Base.connection.create_table(:simple_state_machine_tests, force: true) do |t|
@@ -13,8 +13,6 @@ RSpec.describe SimpleStateMachine, type: :model do
     class SimpleStateMachineTest < ActiveRecord::Base
 
       include SimpleStateMachine
-
-      enum :status, { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
       ALLOWED_STATUS_TRANSITIONS = {
         draft: {
@@ -31,6 +29,10 @@ RSpec.describe SimpleStateMachine, type: :model do
         },
         archived: {}.freeze
       }.freeze
+
+      enum :status, { draft: 0, published: 1, cancelled: 2, archived: 3 }
+
+      validate :ensure_valid_status_transition, on: :update, if: :status_changed?
 
       def can_revert_to_draft?; true; end
 
