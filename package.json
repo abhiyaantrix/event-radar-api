@@ -26,7 +26,6 @@
     ],
     "*.{rb,ru}": [
       "npm run rubocop:fix",
-      "bundle exec rails_best_practices",
       "bundle exec reek",
       "bundle exec rake traceroute"
     ],
