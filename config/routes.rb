@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :users, only: [ :index ]
+      resources :events, only: [ :index ]
 
       # This must be the last route definition under the namespace
       # to catch-all route to handle missing routes

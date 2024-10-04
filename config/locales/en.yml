@@ -36,6 +36,8 @@ en:
       endpoints:
         users:
           index: Paginated list of users for platform administration
+        events:
+          index: Paginated list of events
       models:
         user:
           id:
@@ -49,7 +51,7 @@ en:
           full_name:
             description: Full name of the user, in 'First Name Last Name' format
           status:
-            description: User's account status, one of %{statuses}
+            description: User's account status
           archival_reason:
             description: Reason for archiving the user's account
           preferences:
@@ -59,6 +61,23 @@ en:
             description: Date and time when the user account was created (ISO8601 format)
           updated_at:
             description: Date and time of the last update to the user account (ISO8601 format)
+        event:
+          id:
+            description: Unique identifier for the event
+          title:
+            description: Title of the event
+          description:
+            description: Event's brief description
+          status:
+            description: Event's status
+          start_time:
+            description: Start time of the event (ISO8601 format)
+          end_time:
+            description: End time of the event (ISO8601 format)
+          created_at:
+            description: Date and time when the event was created (ISO8601 format)
+          updated_at:
+            description: Date and time of the last update to the event (ISO8601 format)
       response:
         ok: Success
         errors:

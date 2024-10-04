@@ -6,6 +6,36 @@ info:
     a standalone, fully functional UI.
   version: v1
 paths:
+  '/api/v1/events':
+    get:
+      summary: Paginated list of events
+      tags:
+        - Event
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                - id: 1
+                  title: Ruby Meetup - October 2024
+                  description: Ruby developer group's monthly meetup
+                  status: published
+                  startTime: '2024-10-25T10:00:25Z'
+                  createdAt: '2024-09-25T10:00:25Z'
+                  updatedAt: '2024-09-26T06:12:31Z'
+                - id: 2
+                  title: Ruby Meetup - November 2024
+                  description: Ruby developer group's monthly meetup
+                  status: draft
+                  startTime: '2024-11-25T10:00:25Z'
+                  endTime: '2024-11-25T10:00:25Z'
+                  createdAt: '2024-10-25T10:00:25Z'
+                  updatedAt: '2024-10-26T06:12:31Z'
+              schema:
+                type: array
+                items:
+                  '$ref': '#/components/schemas/event'
   '/api/v1/users':
     get:
       summary: Paginated list of users for platform administration
@@ -88,7 +118,7 @@ components:
       properties:
         id:
           type: integer
-          minLength: 1
+          minimum: 1
           description: Unique identifier for the user's account
         email:
           type: string
@@ -112,9 +142,11 @@ components:
           description: Full name of the user, in 'First Name Last Name' format
         status:
           type: string
-          minLength: 0
-          maxLength: 255
-          description: User's account status, one of pending, active, archived
+          enum:
+            - pending
+            - active
+            - archived
+          description: User's account status
         archivalReason:
           type: string
           nullable: true
@@ -136,3 +168,50 @@ components:
           type: string
           description: Date and time of the last update to the user account (ISO8601
             format)
+    event:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - status
+        - startTime
+        - endTime
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          description: Unique identifier for the event
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Title of the event
+        description:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Event's brief description
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+            - cancelled
+            - archived
+          description: Event's status
+        startTime:
+          type: string
+          description: Start time of the event (ISO8601 format)
+        endTime:
+          type: string
+          nullable: true
+          description: End time of the event (ISO8601 format)
+        createdAt:
+          type: string
+          description: Date and time when the event was created (ISO8601 format)
+        updatedAt:
+          type: string
+          description: Date and time of the last update to the event (ISO8601 format)

@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe API::V1::UserSerializer, type: :serializer do
-  subject(:serialized_json) { JSON.parse(described_class.new(user).serialize) }
+  subject(:serialized_json) { described_class.new(user).serialize }
 
   let(:user) { create(:user, preferences: { theme: 'dark' }) }
 
-  let(:expected_user_data) do
+  let(:expected_data) do
     {
       "id" => user.id,
       "firstName" => user.first_name,
@@ -21,7 +21,5 @@ RSpec.describe API::V1::UserSerializer, type: :serializer do
     }
   end
 
-  it 'includes expected attributes' do
-    expect(serialized_json).to eq(expected_user_data)
-  end
+  include_examples 'validate serialized json'
 end
