@@ -36,6 +36,28 @@ paths:
                 type: array
                 items:
                   '$ref': '#/components/schemas/event'
+  '/api/v1/events/{event_id}':
+    get:
+      summary: Get single event
+      tags:
+        - Event
+      parameters:
+        - '$ref': '#/components/parameters/event_id'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                id: 1
+                title: Ruby Meetup - November 2024
+                description: Ruby developer group's monthly meetup
+                status: published
+                startTime: '2024-11-25T10:00:25Z'
+                createdAt: '2024-10-25T10:00:25Z'
+                updatedAt: '2024-10-26T06:12:31Z'
+              schema:
+                '$ref': '#/components/schemas/event'
   '/api/v1/users':
     get:
       summary: Paginated list of users for platform administration
@@ -78,6 +100,14 @@ servers:
       defaultHost:
         default: www.example.com
 components:
+  parameters:
+    event_id:
+      name: event_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier for the event
   schemas:
     error:
       type: object

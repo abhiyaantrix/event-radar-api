@@ -12,4 +12,12 @@ class API::V1::EventsController < API::V1::BaseController
     render json: API::V1::EventSerializer.new(events).serialize
   end
 
+  def show
+    id = params.require(:id).to_i
+
+    event = Event.find(id)
+
+    render json: API::V1::EventSerializer.new(event).serialize
+  end
+
 end
