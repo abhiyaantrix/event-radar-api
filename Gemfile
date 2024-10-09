@@ -55,7 +55,7 @@ gem 'rack-attack', '~> 6.7'
 gem 'rack-cors', '~> 2.0.2'
 
 # Migrate data across all envs alongside schema migrations
-gem 'data_migrate', '~> 11.0.0'
+gem 'data_migrate', '~> 11.1.0'
 
 # Catch unsafe migrations in development
 gem 'strong_migrations'
