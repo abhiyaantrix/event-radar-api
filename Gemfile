@@ -36,7 +36,7 @@ gem 'valid_email2', '~> 5.3'
 gem 'annotate'
 
 # JSON Serialization
-gem 'alba', '~> 3.2'
+gem 'alba', '~> 3.3'
 gem 'oj', '~> 3.16.6'
 
 # Reduces boot times through caching; required in config/boot.rb
