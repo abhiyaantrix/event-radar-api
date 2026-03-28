@@ -54,3 +54,6 @@ npm-debug.log*
 
 # Diagrams
 *.drawio.bkp
+
+# Claude
+/.claude/settings.local.json
