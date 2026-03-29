@@ -28,6 +28,18 @@ RSpec.describe 'db_reset' do
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate:with_data'].invoke
     Rake::Task['db:seed'].invoke
+
+    # pg_dump 16+ (Ubuntu) emits a random session token and a version header
+    # that vary between runs and environments. Strip them from both files so
+    # the comparison focuses on schema structure, not pg_dump formatting.
+    [current_structure_file, tmp_structure_file].each do |file|
+      content = File.read(file)
+      content.gsub!(/^\\(un)?restrict \S+\n/, '')
+      content.gsub!(/^-- Dumped (from database version|by pg_dump version) .*\n/, '')
+      content.sub!(/\A\n+/, '')        # remove leading blank lines left behind
+      content.gsub!(/\n{3,}/, "\n\n") # collapse consecutive blank lines left behind
+      File.write(file, content)
+    end
   end
 
   it 're-creates the schema and compares to the currently committed structure.sql file to detect differences' do
